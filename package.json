@@ -2,7 +2,7 @@
   "name": "harmony",
   "version": "0.0.1",
   "description": "Harmony MonoRepo - Template Project",
-  "main": "bin/run.harmony.js",
+  "main": ".harmony/scripts/run-dev/run.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,6 +16,7 @@
   "author": "Nicholas Frai",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^14.14.33"
+    "@types/node": "^14.14.33",
+    "chokidar": "^3.5.1"
   }
 }
