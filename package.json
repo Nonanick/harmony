@@ -1,0 +1,21 @@
+{
+  "name": "harmony",
+  "version": "0.0.1",
+  "description": "Harmony MonoRepo - Template Project",
+  "main": "bin/run.harmony.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Harmony",
+    "Project",
+    "Mono",
+    "Repo",
+    "Template"
+  ],
+  "author": "Nicholas Frai",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^14.14.33"
+  }
+}

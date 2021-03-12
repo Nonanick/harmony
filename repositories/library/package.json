@@ -1,0 +1,15 @@
+{
+  "name": "harmony-library",
+  "version": "0.0.1",
+  "description": "Harmony Library Folder",
+  "main": "dist/library.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Harmony",
+    "Library"
+  ],
+  "author": "Nicholas Frai",
+  "license": "MIT"
+}
