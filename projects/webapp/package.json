@@ -26,5 +26,7 @@
   },
   "dependencies": {
     "sirv-cli": "^1.0.0"
-  }
+  },
+  "author": "Nicholas Frai",
+  "license": "MIT"
 }
