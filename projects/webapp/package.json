@@ -27,6 +27,7 @@
   "dependencies": {
     "sirv-cli": "^1.0.0"
   },
-  "author": "Nicholas Frai",
-  "license": "MIT"
+  "author": "nicholas",
+  "license": "MIT",
+  "description": "Harmony's Webapp project"
 }

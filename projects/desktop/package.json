@@ -12,7 +12,7 @@
     "Electron",
     "App"
   ],
-  "author": "Nicholas Frai",
+  "author": "nicholas",
   "license": "MIT",
   "devDependencies": {
     "electron": "^12.0.1"

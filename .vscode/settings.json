@@ -1,0 +1,13 @@
+{
+  "material-icon-theme.folders.associations": {
+    "webapp": "Global",
+    "ui": "Views",
+    "gui": "Views",
+    "projects": "Vscode",
+    "desktop": "Middleware",
+    "toolbox": "Tools",
+    "collection" : "Resource",
+    "entities" : "Components",
+    "properties" : "Template"
+  },
+}

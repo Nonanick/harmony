@@ -1,7 +1,7 @@
 {
   "name": "harmony-library",
   "version": "0.0.1",
-  "description": "Harmony Library Folder",
+  "description": "Harmony's Library project",
   "main": "dist/library.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,9 @@
     "Harmony",
     "Library"
   ],
-  "author": "Nicholas Frai",
-  "license": "MIT"
+  "author": "nicholas",
+  "license": "MIT",
+  "dependencies": {
+    "kuuid": "^0.6.0"
+  }
 }

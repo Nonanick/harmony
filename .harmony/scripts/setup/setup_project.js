@@ -53,7 +53,7 @@ inquirer_1.default.prompt([
         try {
             let packageFileContents = yield fs_1.promises.readFile(path_1.default.join(projectsRootFolder, projectFolderName, 'package.json'), 'utf-8');
             let packageConfig = JSON.parse(packageFileContents);
-            packageConfig = Object.assign(Object.assign({}, packageConfig), { name: `${answers.project_name}-${projectFolderName}`, version: answers.version, author: answers.author, license: answers.license });
+            packageConfig = Object.assign(Object.assign({}, packageConfig), { name: `${answers.project_name}-${projectFolderName}`, version: answers.version, author: answers.author, license: answers.license, description: `${firstToUpper(answers.project_name)}'s ${firstToUpper(projectFolderName)} project` });
             yield fs_1.promises.writeFile(path_1.default.join(projectsRootFolder, projectFolderName, 'package.json'), JSON.stringify(packageConfig, null, 2));
             console.log(`[!] Updated project ${projectFolderName} package.json file!`);
         }
@@ -65,3 +65,6 @@ inquirer_1.default.prompt([
     return;
 })).catch(err => {
 });
+function firstToUpper(text, separators = [' ']) {
+    return text.split(' ').map(t => t.charAt(0).toUpperCase() + t.substr(1)).join(' ');
+}

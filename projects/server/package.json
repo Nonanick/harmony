@@ -1,7 +1,7 @@
 {
   "name": "harmony-server",
   "version": "0.0.1",
-  "description": "Harmony Server",
+  "description": "Harmony's Server project",
   "main": "dist/server.boot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,10 +10,11 @@
     "Harmony",
     "Server"
   ],
-  "author": "Nicholas Frai",
+  "author": "nicholas",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
     "tslib": "^2.1.0"
   }
 }
