@@ -8,6 +8,7 @@
     "toolbox": "Tools",
     "collection" : "Resource",
     "entities" : "Components",
-    "properties" : "Template"
+    "properties" : "Template",
+    ".harmony" : "Core"
   },
 }
