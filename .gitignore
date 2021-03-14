@@ -3,6 +3,6 @@ pnpm-lock.yaml
 
 projects/**/dist/**/*.js
 projects/**/dist/**/*.d.ts
-
+**/*.js.map
 **/.harmony/**/*.js
 !**/.harmony/**/*.esm.js

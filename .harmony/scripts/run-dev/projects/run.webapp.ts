@@ -70,8 +70,22 @@ const WebApp: {
       WebApp.BootCompiler();
     } else {
       try {
-        WebApp.Compiler!.kill(0);
-        WebApp.BootCompiler();
+        return new Promise((resolve, reject) => {
+          let timeout : any;
+          
+          WebApp.Compiler!.on("exit", () => {
+            WebApp.BootCompiler();
+            clearTimeout(timeout);
+            resolve();
+          });
+
+          timeout = setTimeout(() => {
+            reject("Failed to terminate rollup process! Timed out!");
+          }, 10000);
+
+          WebApp.Compiler!.kill('SIGTERM');
+        });
+        
       } catch (err) {
         console.error("🚨 [Project: WebApp] ERROR!\nFailed to restart WebApp compiler thread!", err);
       }

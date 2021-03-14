@@ -13,7 +13,7 @@ function serve() {
 	let server;
 
 	function toExit() {
-		if (server) server.kill(0);
+		if (server) server.kill('SIGTERM');
 	}
 
 	return {
@@ -21,11 +21,11 @@ function serve() {
 			if (server) return;
 			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
 				stdio: ['ignore', 'inherit', 'inherit'],
-				shell: true
+				shell: false,
+				detached : false,
 			});
-
+			process.on('beforeExit', toExit);
 			process.on('SIGTERM', toExit);
-			process.on('exit', toExit);
 		}
 	};
 }
@@ -36,7 +36,7 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: 'public/build/bundle.js'
+		file: 'public/app/app.bundle.js'
 	},
 	plugins: [
 		svelte({
@@ -48,7 +48,7 @@ export default {
 		}),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
-		css({ output: 'bundle.css' }),
+		css({ output: 'stylesheet.bundle.css' }),
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
@@ -61,8 +61,8 @@ export default {
 		}),
 		commonjs(),
 		typescript({
-			sourceMap: !production,
-			inlineSources: !production
+			//sourceMap: !production,
+			//inlineSources: !production
 		}),
 
 		// In dev mode, call `npm run start` once
@@ -71,7 +71,10 @@ export default {
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production
-		!production && livereload('public'),
+		!production && livereload({
+			watch : 'public',
+			clientUrl : 'http://localhost:35729/livereload.js?snipv'
+		}),
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
