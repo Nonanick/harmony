@@ -28,7 +28,7 @@ const Library: {
   },
 
   BootWatcher: () => {
-    const watcher = new ProjectWatcher(Library.ProjectRoot);
+    const watcher = new ProjectWatcher(Library.ProjectRoot, 'Library');
 
     watcher.add(
       GenerateDTOOnEntityUpsert

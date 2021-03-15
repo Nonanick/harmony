@@ -1,3 +1,4 @@
+import 'v8-compile-cache';
 import chalk from 'chalk';
 import { CLIInputListener } from '../../toolbox/cli.input.listener';
 import { Library } from './projects/run.library';
@@ -17,13 +18,6 @@ WebApp.Boot();
 
 inputListener.on("rs:lib", async _ => {
   await Library.RestartCompiler();
-});
-
-inputListener.on("rs:web", async _ => {
-  await WebApp.RestartCompiler();
-});
-inputListener.on("rs:ui", async _ => {
-  await WebApp.RestartCompiler();
 });
 
 inputListener.on("rs:server", _ => {

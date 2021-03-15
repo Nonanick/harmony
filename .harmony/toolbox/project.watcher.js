@@ -7,8 +7,9 @@ exports.ProjectWatcher = void 0;
 const path_1 = __importDefault(require("path"));
 const chokidar_1 = __importDefault(require("chokidar"));
 class ProjectWatcher {
-    constructor(projectRoot) {
+    constructor(projectRoot, projectName) {
         this.projectRoot = projectRoot;
+        this.projectName = projectName;
         this._delay = 2000;
         this._hooks = {};
         this.isInitial = true;
@@ -39,7 +40,7 @@ class ProjectWatcher {
         var _a;
         if (hook.timeout == null) {
             hook.timeout = setTimeout(() => {
-                console.log('⭐ \x1b[1m[Watcher]\x1b[0m Firing "\x1b[2m' + hook.name + '\x1b[0m"!');
+                console.log('⭐ \x1b[1m[Watcher' + (this.projectName != null ? ': ' + this.projectName : '') + ']\x1b[0m Firing "\x1b[2m' + hook.name + '\x1b[0m"!');
                 hook.hook(event, pathString, this.isInitial, this);
                 delete hook.timeout;
             }, (_a = hook.debounce) !== null && _a !== void 0 ? _a : this._delay);

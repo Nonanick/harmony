@@ -33,7 +33,7 @@ const Server: {
   },
 
   BootWatcher: () => {
-    const watcher = new ProjectWatcher(Server.ProjectRoot);
+    const watcher = new ProjectWatcher(Server.ProjectRoot, 'Server');
 
     watcher.add(RestartServerOnDistFolderChanges);
     watcher.start();
@@ -46,7 +46,7 @@ const Server: {
     Server.Compiler = serverCompiler;
 
     serverCompiler.stderr?.on("data", (a) => {
-      process.stderr.write(a);
+      process.stderr.write(chalk.red(a));
     });
 
     return new Promise((resolve, reject) => {
@@ -79,7 +79,7 @@ const Server: {
 
   BootWorker: () => {
     const worker = new Worker(
-      path.join(Server.ProjectRoot, 'dist', 'server.boot.esm.js')
+      path.join(Server.ProjectRoot, 'dist', 'server.boot.esm.js'),
     );
     Server.WorkerThread = worker;
     console.log(`💻 ${chalk.bold('[Project: Server]')} Project worker loaded!`);

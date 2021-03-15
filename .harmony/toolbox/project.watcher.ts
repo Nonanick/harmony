@@ -33,7 +33,7 @@ export class ProjectWatcher {
 
   };
 
-  constructor(private projectRoot: string) { }
+  constructor(private projectRoot: string, private projectName? : string) { }
 
   get watcher() {
     if (this.fsWatcher == null) {
@@ -45,7 +45,7 @@ export class ProjectWatcher {
   fireHook(hook: ProjectHook & { timeout?: any }, event: ProjectEvent, pathString: string) {
     if (hook.timeout == null) {
       hook.timeout = setTimeout(() => {
-        console.log('⭐ \x1b[1m[Watcher]\x1b[0m Firing "\x1b[2m' + hook.name + '\x1b[0m"!');
+        console.log('⭐ \x1b[1m[Watcher' + (this.projectName != null ? ': ' + this.projectName : '') + ']\x1b[0m Firing "\x1b[2m' + hook.name + '\x1b[0m"!');
         hook.hook(event, pathString, this.isInitial, this);
         delete hook.timeout;
       }, hook.debounce ?? this._delay);

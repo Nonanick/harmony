@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DemandServerRestart = exports.DemandServerCompilerRestart = void 0;
+require("v8-compile-cache");
 const chalk_1 = __importDefault(require("chalk"));
 const cli_input_listener_1 = require("../../toolbox/cli.input.listener");
 const run_library_1 = require("./projects/run.library");
@@ -27,12 +28,6 @@ run_library_1.Library.Boot();
 run_webapp_1.WebApp.Boot();
 inputListener.on("rs:lib", (_) => __awaiter(void 0, void 0, void 0, function* () {
     yield run_library_1.Library.RestartCompiler();
-}));
-inputListener.on("rs:web", (_) => __awaiter(void 0, void 0, void 0, function* () {
-    yield run_webapp_1.WebApp.RestartCompiler();
-}));
-inputListener.on("rs:ui", (_) => __awaiter(void 0, void 0, void 0, function* () {
-    yield run_webapp_1.WebApp.RestartCompiler();
 }));
 inputListener.on("rs:server", _ => {
     DemandServerRestart();

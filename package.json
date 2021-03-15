@@ -27,6 +27,7 @@
     "inquirer": "^8.0.0"
   },
   "dependencies": {
-    "esm": "^3.2.25"
+    "esm": "^3.2.25",
+    "v8-compile-cache": "^2.3.0"
   }
 }
