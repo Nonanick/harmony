@@ -1,0 +1,1 @@
+export type RouteDeactivation = () => Promise<true | string>;
