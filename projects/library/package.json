@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Harmony's Library project",
   "main": "dist/library.js",
+  "types": "dist/library.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
