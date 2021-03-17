@@ -9,6 +9,72 @@ export class Api implements ApiBridge {
   constructor(private serverURL?: string) {
 
   }
+
+  get<Payload = any>(url: string, queryParams?: { [name: string]: string }, options?: Omit<ApiRequest, "method" | "url" | "body">): ApiPendingRequest<Payload> {
+
+    if (queryParams != null) {
+      let queryStr = Object.entries(queryParams).map(([key, value]) => {
+        return `${encodeURI(key)}=${encodeURI(value)}`
+      }).join('&');
+
+      if (url.indexOf('?') >= 0) {
+        url += '&' + queryStr;
+      } else {
+        url += '?' + queryStr;
+      }
+    }
+
+    return this.request({
+      ...options,
+      method: 'GET',
+      url
+    });
+  }
+
+  post<Payload = any>(url: string, body?: any, options?: Omit<ApiRequest, "method" | "url" | "body">): ApiPendingRequest<Payload> {
+
+    return this.request({
+      ...options,
+      method: 'POST',
+      url: url,
+      body
+    });
+
+  }
+
+  put<Payload = any>(url: string, body?: any, options?: Omit<ApiRequest, "method" | "url" | "body">): ApiPendingRequest<Payload> {
+
+    return this.request({
+      ...options,
+      method: 'PUT',
+      url: url,
+      body
+    });
+
+  }
+
+  delete<Payload = any>(url: string, body?: any, options?: Omit<ApiRequest, "method" | "url" | "body">): ApiPendingRequest<Payload> {
+
+    return this.request({
+      ...options,
+      method: 'DELETE',
+      url: url,
+      body
+    });
+
+  }
+
+  patch<Payload = any>(url: string, body?: any, options?: Omit<ApiRequest, "method" | "url" | "body">): ApiPendingRequest<Payload> {
+
+    return this.request({
+      ...options,
+      method: 'PATCH',
+      url: url,
+      body
+    });
+
+  }
+
   request<Payload = any>(request: ApiRequest): ApiPendingRequest<Payload> {
     let abortCtrl = new AbortController();
     let startTime = performance.now();
@@ -73,6 +139,7 @@ export class Api implements ApiBridge {
       this._responseProxies.push(proxy);
     }
   }
+  
   removeResponseProxy(proxy: ApiResponseProxy): void {
     if (this._responseProxies.includes(proxy)) {
       this._responseProxies = this._responseProxies.filter(p => p != proxy);
