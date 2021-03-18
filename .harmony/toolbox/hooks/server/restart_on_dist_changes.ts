@@ -5,8 +5,8 @@ export const RestartServerOnDistFolderChanges: ProjectHook = {
   name: 'Restart Server on file changes',
   event: "all",
   pattern: [/dist\/.*\.(js|json|env)$/],
-  debounce : 5000,
-  async hook(_, _a, initial) {
+  debounce: 5000,
+  async hook({ isInitial: initial }) {
     if (!initial) {
       await Server.RestartWorker();
     }

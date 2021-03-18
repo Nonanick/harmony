@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import { ChildProcess, exec } from 'child_process';
 import path from 'path';
 import ProjectRoot from '../../../project.root';
+import { GenerateWebappRoutesArray } from '../../../toolbox/hooks/webapp/generate_route_array';
 import { ProjectWatcher } from '../../../toolbox/project.watcher';
 
 // WebApp Project
@@ -27,7 +28,10 @@ const WebApp: {
 
   BootWatcher: () => {
     const watcher = new ProjectWatcher(WebApp.ProjectRoot, 'WebApp');
-
+    watcher.add(
+      GenerateWebappRoutesArray
+    );
+    
     watcher.start();
 
     WebApp.Watcher = watcher;
@@ -36,9 +40,7 @@ const WebApp: {
   async BootCompiler() {
     const webappCompiler = exec('pnpx rollup -c -w', { cwd: WebApp.ProjectRoot });
     WebApp.Compiler = webappCompiler;
-
-
-
+    
     return new Promise((resolve) => {
       let resolved = false;
       let compilerOutput = "";

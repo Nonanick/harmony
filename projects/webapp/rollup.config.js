@@ -7,7 +7,7 @@ import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
 
-const production = !process.env.ROLLUP_WATCH;
+const production = false;
 
 function serve() {
 	let server;
@@ -19,9 +19,9 @@ function serve() {
 	return {
 		writeBundle() {
 			if (server) return;
-			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+			server = require('child_process').spawn('pnpm', ['start', '--', '--dev'], {
 				stdio: ['ignore', 'inherit', 'inherit'],
-				shell: false,
+				shell: true,
 				detached : false,
 			});
 			process.on('beforeExit', toExit);
@@ -73,7 +73,7 @@ export default {
 		// browser on changes when not in production
 		!production && livereload({
 			watch : 'public',
-			clientUrl : 'http://localhost:35729/livereload.js?snipv'
+		//	clientUrl : 'http://localhost:35729/livereload.js?snipv'
 		}),
 
 		// If we're building for production (npm run build
@@ -81,6 +81,7 @@ export default {
 		production && terser()
 	],
 	watch: {
-		clearScreen: false
+		//clearScreen: false,
+   // chokidar : false,
 	}
 };

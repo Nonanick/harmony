@@ -8,7 +8,7 @@ const GenerateDTOIndexOnEntityUpsertOrDelete : ProjectHook = {
   name : 'Generate DTO index on entity update/insert/delete',
   event : ["add","change", "unlink"],
   pattern: [/dtos\/.*\.dto\.ts$/],
-  async hook(event, paths, wacther) {
+  async hook() {
 
   }
 }

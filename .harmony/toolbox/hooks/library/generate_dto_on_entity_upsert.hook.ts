@@ -13,7 +13,7 @@ const GenerateDTOOnEntityUpsert: ProjectHook = {
   name: "Generate DTO on entity Update/Insert",
   event: ["add", "change"],
   pattern: [/\.entity\.js$/],
-  async hook(_, pathString) {
+  async hook({filepath : pathString}) {
     import(pathString).then(module => {
       let entity = module.default;
       let tsAST = GenerateDTOFromEntity(entity);

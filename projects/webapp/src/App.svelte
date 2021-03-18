@@ -1,5 +1,8 @@
 <script lang="ts">
 	export let name: string;
+  export let routes : any;
+
+  console.log('Loaded Routes!:', routes);
 </script>
 
 <main>

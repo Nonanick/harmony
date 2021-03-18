@@ -15,16 +15,17 @@ class ProjectWatcher {
         this.isInitial = true;
         this.watchFSListener = (evName, pathString) => {
             var _a, _b;
-            pathString = path_1.default.join(this.projectRoot, pathString);
+            let normalizedPath = pathString.replaceAll(path_1.default.sep, path_1.default.posix.sep);
+            normalizedPath = path_1.default.posix.join(this.projectRoot, normalizedPath);
             (_a = this._hooks['all']) === null || _a === void 0 ? void 0 : _a.forEach(hook => {
-                if (this.pathMatchesHookPattern(pathString, hook)) {
-                    this.fireHook(hook, evName, pathString);
+                if (this.pathMatchesHookPattern(normalizedPath, hook)) {
+                    this.fireHook(hook, evName, normalizedPath);
                 }
             });
             if (evName != "all") {
                 (_b = this._hooks[evName]) === null || _b === void 0 ? void 0 : _b.forEach(hook => {
-                    if (this.pathMatchesHookPattern(pathString, hook)) {
-                        this.fireHook(hook, evName, pathString);
+                    if (this.pathMatchesHookPattern(normalizedPath, hook)) {
+                        this.fireHook(hook, evName, normalizedPath);
                     }
                 });
             }
@@ -41,7 +42,12 @@ class ProjectWatcher {
         if (hook.timeout == null) {
             hook.timeout = setTimeout(() => {
                 console.log('⭐ \x1b[1m[Watcher' + (this.projectName != null ? ': ' + this.projectName : '') + ']\x1b[0m Firing "\x1b[2m' + hook.name + '\x1b[0m"!');
-                hook.hook(event, pathString, this.isInitial, this);
+                hook.hook({
+                    eventName: event,
+                    filepath: pathString,
+                    isInitial: this.isInitial,
+                    watcher: this
+                });
                 delete hook.timeout;
             }, (_a = hook.debounce) !== null && _a !== void 0 ? _a : this._delay);
         }

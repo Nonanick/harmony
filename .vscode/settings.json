@@ -9,6 +9,6 @@
     "collection" : "Resource",
     "entities" : "Components",
     "properties" : "Template",
-    ".harmony" : "Core"
+    ".harmony" : "Core",
   },
 }

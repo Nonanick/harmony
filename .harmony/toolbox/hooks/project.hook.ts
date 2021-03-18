@@ -7,7 +7,7 @@ export interface ProjectHook {
   pattern : RegExp | RegExp[];
   mustMatchAllPatterns? : boolean;
   debounce? : number;
-  hook : (eventName : ProjectEvent, filepath : string, isInitial : boolean, watcher : ProjectWatcher) => Promise<void>;
+  hook : (hookContext : { eventName : ProjectEvent, filepath : string, isInitial : boolean, watcher : ProjectWatcher}) => Promise<void>;
 }
 
 export type ProjectEvent = 'add' | 'change' | 'unlink' | 'all' & string;

@@ -29,11 +29,12 @@ const Server: {
   async Boot() {
     await Server.BootCompiler();
     Server.BootWatcher();
-    //Server.BootWorker(); // Worker shall be booted after the generation of entities!
+    Server.BootWorker(); // Worker shall be booted after the generation of entities!
   },
 
   BootWatcher: () => {
     const watcher = new ProjectWatcher(Server.ProjectRoot, 'Server');
+
 
     watcher.add(RestartServerOnDistFolderChanges);
     watcher.start();
