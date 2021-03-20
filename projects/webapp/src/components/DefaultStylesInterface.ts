@@ -14,9 +14,8 @@ export interface DefaultStylesInterface {
     TextInput: any;
   };
   interface: {
-    Breadcrumb: any;
-    Tab: any;
     AlertBox: any;
+    Breadcrumb: any;
     Button: any;
     Card: any;
     Chip: any;
@@ -31,5 +30,7 @@ export interface DefaultStylesInterface {
     ProgressRing: any;
     ResizableContainer: any;
     SVGIcon: SVGIconStyle;
+    Tab: any;
+    Tooltip : any;
   };
 }

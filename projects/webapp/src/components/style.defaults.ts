@@ -1,5 +1,14 @@
 import type { DefaultStylesInterface  } from './DefaultStylesInterface';
 
+// SVG icon default styling
+const SVGIcon = {
+  aspect_ratio: 1,
+  size: '16pt',
+  bg_color: 'transparent',
+  box_radius: '50%',
+  color: '#303030'
+};
+
 const DefaultStyles: DefaultStylesInterface = {
   form: {
     CheckBox: {},
@@ -29,14 +38,9 @@ const DefaultStyles: DefaultStylesInterface = {
     ProgressBar: {},
     ProgressRing: {},
     ResizableContainer: {},
-    SVGIcon: {
-      aspect_ratio: 1,
-      size: '16pt',
-      bg_color: 'transparent',
-      box_radius: '50%',
-      color: '#303030'
-    },
+    SVGIcon,
     Tab: {},
+    Tooltip : {},
   }
 };
 
