@@ -5,6 +5,13 @@ import { Library } from './projects/run.library';
 import { Server } from './projects/run.server';
 import { WebApp } from './projects/run.webapp';
 
+console.clear();
+
+console.log(chalk.bold(`
+${chalk.black(chalk.bold(chalk.bgCyanBright('        ==================|  Harmony  |====================        ')))}
+Starting projects in development mode!
+`))
+
 const inputListener = new CLIInputListener(process.stdin);
 
 // Server Project

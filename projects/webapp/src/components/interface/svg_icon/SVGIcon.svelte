@@ -1,28 +1,16 @@
-<script lang="ts" context="module">
+<script lang="ts">
+import DefaultStyles from '../../style.defaults';
 
-  export interface SVGIconProps {
-    src : string;
-  }
+import type { SVGIconProps } from './SVGIconProps';
 
-  export interface SVGIconStyle {
-    aspect_ratio : number;
-    size: string;
-    color : string;
-    bg_color: string;
-    box_radius : string;
-  }
+import type { SVGIconStyle } from './SVGIconStyle';
 
-  export let icon: SVGIconProps;
+  export let props: SVGIconProps;
 
   export let styles : Partial<SVGIconStyle> = {};
 
-  const defaultStyles : SVGIconStyle = {
-    aspect_ratio : 1,
-    size : '16pt',
-    bg_color : 'transparent',
-    box_radius : '50%',
-    color : '#303030'
-  };
+  const defaultStyles : SVGIconStyle = DefaultStyles.interface.SVGIcon;
+
 </script>
 
 <style>
@@ -61,7 +49,7 @@
 <div
   class="ui-icon"
   style="
-  --source: url({icon.src}); 
+  --source: url({props.src}); 
   --size : {styles.size ?? defaultStyles.size}; 
   --icon-color: {styles.color ?? defaultStyles.color}; 
   --radius: {styles.box_radius ?? defaultStyles.box_radius}; 

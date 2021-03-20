@@ -35,9 +35,11 @@ const Server: {
   BootWatcher: () => {
     const watcher = new ProjectWatcher(Server.ProjectRoot, 'Server');
 
-
-    watcher.add(RestartServerOnDistFolderChanges);
     watcher.start();
+
+    watcher.watcher.on("ready", () => {
+      watcher.add(RestartServerOnDistFolderChanges);
+    });
 
     Server.Watcher = watcher;
   },

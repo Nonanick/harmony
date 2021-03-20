@@ -60,9 +60,9 @@ const WebApp: {
           );
           compilerOutput = "";
           webappCompiler.stdout?.off("data", listener);
-          webappCompiler.stderr?.on("data", (a) => {
+          /*webappCompiler.stderr?.on("data", (a) => {
             process.stderr.write(a);
-          });
+          });*/
         }
       };
       webappCompiler.stdout?.on("data", listener);

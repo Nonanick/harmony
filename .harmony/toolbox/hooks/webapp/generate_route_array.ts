@@ -4,6 +4,7 @@ import path from 'path';
 import glob from 'glob';
 import { ProjectHook } from '../project.hook';
 import ProjectRoot from '../../../project.root';
+import chalk from 'chalk';
 
 const WebAppRoutesDir = path.join(ProjectRoot, 'projects', 'webapp', 'src', 'routes');
 
@@ -12,14 +13,14 @@ export const GenerateWebappRoutesArray: ProjectHook = {
   event: 'all',
   pattern: [/src\/routes\/.*\.route\.ts$/],
   mustMatchAllPatterns: true,
-  async hook() {
+  async hook({ isInitial }) {
 
     glob('**/*.route.ts', {
       cwd: WebAppRoutesDir,
       ignore: '**/index.ts'
     }, async (err, paths) => {
       if (err != null) {
-        console.error('Failed to recretae routes index!', err);
+        console.error('Failed to recreate routes barrel file!', err);
       }
 
       let routeExports: {
@@ -114,7 +115,18 @@ export const GenerateWebappRoutesArray: ProjectHook = {
 
       for (let exportClause of Object.values(routeExports)) {
         let relativePath = './' + exportClause.file.substr(WebAppRoutesDir.length + 1).replaceAll(path.sep, path.posix.sep).replace(/.ts$/g, '');
-        routesFileContent += `export { ${(exportClause.isDefault ?? false) ? 'default as ' :  ''}${exportClause.identifierName} } from '${relativePath}';\n`
+        routesFileContent += `export { ${(exportClause.isDefault ?? false) ? 'default as ' : ''}${exportClause.identifierName} } from '${relativePath}';\n`
+      }
+      if (!isInitial) {
+        console.log(
+          `📁 ${chalk.bold('[WebApp - Generate Routes]')} Done scanning routes folder, found routes:\n` +
+          Object.values(routeExports).map(
+            r => {
+              let fileName = path.basename(r.file);
+              return ` ▫️ ${r.identifierName} @${chalk.dim(fileName)};`;
+            }
+          ).join('\n')
+        );
       }
 
       fs.writeFile(
