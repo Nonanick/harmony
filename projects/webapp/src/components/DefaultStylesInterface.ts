@@ -1,3 +1,5 @@
+import type { BreadcrumbStyle } from './interface/breadcrumb/BreadcrumbStyle';
+import type { ButtonStyle } from './interface/button/ButtonStyle';
 import type { SVGIconStyle } from './interface/svg_icon/SVGIconStyle';
 
 export interface DefaultStylesInterface {
@@ -15,8 +17,8 @@ export interface DefaultStylesInterface {
   };
   interface: {
     AlertBox: any;
-    Breadcrumb: any;
-    Button: any;
+    Breadcrumb: BreadcrumbStyle;
+    Button: ButtonStyle;
     Card: any;
     Chip: any;
     CircularFrame: any;

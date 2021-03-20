@@ -54,7 +54,9 @@ export const GenerateWebappRoutesArray: ProjectHook = {
                     ts.isVariableDeclaration(declaration)
                     && ts.isTypeReferenceNode(declaration.type!)
                     && ts.isIdentifier(declaration.type!.typeName)
-                    && declaration.type!.typeName.escapedText === "Route"
+                    // TODO: transform all of the "Interfaces" for routes in a setting 
+                    && (declaration.type!.typeName.escapedText === "Route"
+                      || declaration.type!.typeName.escapedText === "AppRoute") 
                   ) {
                     let exportToken = node.modifiers?.filter(m => ts.isToken(m));
 

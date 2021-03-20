@@ -14,7 +14,7 @@ import type { SVGIconStyle } from './SVGIconStyle';
 </script>
 
 <style>
-  .ui-icon {
+  :global(.ui-icon) {
     position: relative;
     display: inline-block;
     width: var(--size);
@@ -24,7 +24,7 @@ import type { SVGIconStyle } from './SVGIconStyle';
     overflow: hidden;
     vertical-align: middle;
   }
-  .fix-ratio {
+  :global(.ui-icon > .fix-ratio) {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -41,8 +41,8 @@ import type { SVGIconStyle } from './SVGIconStyle';
     -webkit-mask-position: center;
     mask-position: center;
 
-    -webkit-mask-size: 100%;
-    mask-size: 100%;
+    -webkit-mask-size: 90%;
+    mask-size: 90%;
   }
 </style>
 

@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Svelte - TS Config",
   "compilerOptions": {
     "moduleResolution": "node",

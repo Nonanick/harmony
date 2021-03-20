@@ -6,21 +6,28 @@ export const LightInterfaceTheme : InterfaceTheme = {
   variables : {
     
     // Main color
-    "main-color" : "#A71D31",
-    "main-color-75" : "#DA2F49",
-    "main-color-50" : "#E36376",
-    "main-color-25" : "#F0A8B3",
-    "text-on-main-color" : "#E9F1F7",
+    "secondary-color" : "#A71D31",
+    "secondary-color-75" : "#DA2F49",
+    "secondary-color-50" : "#E36376",
+    "secondary-color-25" : "#f7c7ce",
+    "text-on-secondary-color" : "#f8f8f8",
     
     // Secondary color
-    "secondary-color" : "#003D5B",
-    "secondary-color-75" : "#006DA3",
-    "secondary-color-50" : "#00A3F5",
-    "secondary-color-25" : "#5FA2C4",
-    "text-on-secondary-color" : "#DCC9B6",
+    "main-color" : "#003D5B",
+    "main-color-75" : "#006DA3",
+    "main-color-50" : "#126B97",
+    "main-color-25" : "#CEDFE8",
+    "text-on-main-color" : "#f8f8f8",
 
     // Background color
-    "background-color" : '#f9f9f9',
+    "background-color" : '#e0e0e0',
     "text-on-background-color" : "#202020",
+
+    // Box shadow
+    "default-box-shadow" : '0px 4px 6px -4px rgba(0,0,0,0.6)',
+    "box-shadow-1" : '0px 4px 6px -4px rgba(0,0,0,0.8)',
+    "box-shadow-2" : '0px 7px 6px -5px rgba(0,0,0,0.6)',
+    "box-shadow-3" : '1px 1px 8px 0px rgba(0,0,0,0.2)',
+    "box-shadow-4" : '',
   }
 }

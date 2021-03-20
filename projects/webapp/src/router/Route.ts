@@ -3,7 +3,6 @@ import type { RouteActivation } from './RouteActivation';
 import type { RouteDeactivation } from './RouteDeactivation';
 
 export interface Route {
-  title?: string;
   pattern: string;
   guard?: GuardRoute | GuardRoute[];
   onActivation: RouteActivation | RouteActivation[];

@@ -9,7 +9,7 @@ import ProjectRoot from '../../project.root';
 
 console.log(
   `
-${chalk.bold('[Harmony] - Setup a new Mono Repo Project:')}
+${chalk.bold('🎵 [Harmony] - Setup a new Mono Repo Project:')}
 ------------------------------------------`
 );
 
@@ -38,32 +38,50 @@ inquirer.prompt([
     default: 'MIT'
   }
 ]).then(async answers => {
-  let projectsRootFolder = path.join(ProjectRoot, 'projects');
-  for (let projectFolderName of ['desktop', 'server', 'library', 'webapp']) {
+  console.log(chalk.bold(`
+🔌 Configuring workspace and subprojects 'package.json'
+-------------------------------------------------------`));
+  const projectsRootFolder = path.join(ProjectRoot, 'projects');
+  for (let projectFolderName of ['../','desktop', 'server', 'library', 'webapp',]) {
 
-    // Update package.json
     try {
-      let packageFileContents = await fs.readFile(
+      const packageFileContents = await fs.readFile(
         path.join(projectsRootFolder, projectFolderName, 'package.json'),
         'utf-8'
       );
-      let packageConfig = JSON.parse(packageFileContents);
+      const packageConfig = JSON.parse(packageFileContents);
+      const oldConfig = packageConfig;
 
-      packageConfig = {
+      // Update package workspace dependencies name */
+      const oldProjectName = oldConfig.name.replace(new RegExp(`-${projectFolderName}$`), '');
+      for (let dependencyName in packageConfig.dependencies ?? {}) {
+        const macthesWorkspaceDependency = dependencyName.match(new RegExp(`^${oldProjectName}-(.*)$`));
+        if (macthesWorkspaceDependency) {
+          const matchedName = macthesWorkspaceDependency[1];
+          const dependencyLocationAndVersion = packageConfig.dependencies[dependencyName];
+          const newDependencyName = `${answers.project_name}-${matchedName}`;
+          delete packageConfig.dependencies[dependencyName];
+          packageConfig.dependencies[newDependencyName] = dependencyLocationAndVersion;
+        }
+      }
+
+      // Update package.json
+      const newPackageConfig = {
         ...packageConfig,
-        name: `${answers.project_name}-${projectFolderName}`,
+        name: `${answers.project_name}${projectFolderName != '../' ? '-' + projectFolderName : ''}`,
         version: answers.version,
         author: answers.author,
         license: answers.license,
-        description : `${firstToUpper(answers.project_name)}'s ${firstToUpper(projectFolderName)} project`
+        description: `${firstToUpper(answers.project_name)}'s ${projectFolderName != '../' ? firstToUpper(projectFolderName) + 'project' : 'root package'}`
       };
 
+      // Write changes to disk
       await fs.writeFile(
         path.join(projectsRootFolder, projectFolderName, 'package.json'),
-        JSON.stringify(packageConfig, null, 2)
+        JSON.stringify(newPackageConfig, null, 2)
       );
 
-      console.log(`[!] Updated project ${projectFolderName} package.json file!`);
+      console.log(` ❕ Updated project ${projectFolderName != '../' ? projectFolderName : 'workspace root'} package.json file!`);
 
     } catch (err) {
       console.error(
@@ -76,10 +94,10 @@ inquirer.prompt([
 
   return;
 }).catch(err => {
-
+  console.error('Failed to acquire information to setup the projects!', err);
 });
 
-function firstToUpper(text : string, separators : string[] = [' ']) {
-  return text.split(' ').map(t => t.charAt(0).toUpperCase() + t.substr(1)).join(' ');
+function firstToUpper(text: string, separators: string[] = [' ']) {
+  return text.split(new RegExp(separators.join('|'))).map(t => t.charAt(0).toUpperCase() + t.substr(1)).join(' ');
 }
 

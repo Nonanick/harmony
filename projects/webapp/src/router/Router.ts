@@ -6,6 +6,7 @@ import type { RouterStrategy } from "./strategies/RouterStrategy";
 const DefaultRoutingStrategy: RouterStrategy = new HashRouter();
 
 class Router {
+
   protected _currentRoute?: Route;
 
   protected routes: Route[] = [];
@@ -71,10 +72,18 @@ class Router {
     }
     if (Array.isArray(activateRoute.onActivation)) {
       for (let activationStep of activateRoute.onActivation) {
-        await activationStep(pureURL, { ...urlParams }, { ...queryParams });
+        await activationStep({
+          url: pureURL,
+          urlParams: { ...urlParams },
+          queryParams: { ...queryParams }
+        });
       }
     } else {
-      await activateRoute.onActivation(pureURL, urlParams, queryParams);
+      await activateRoute.onActivation({
+        url: pureURL,
+        urlParams: { ...urlParams },
+        queryParams: { ...queryParams }
+      });
     }
   };
 
@@ -130,13 +139,7 @@ class Router {
   }
 
   routeGuarded(route?: Route) {
-  }
-
-  onRouteNotFound() {
-    this.strategy.changeURL("/");
-  }
-
-  onRouteGuarded() {
+    
   }
 
   currentURL() {

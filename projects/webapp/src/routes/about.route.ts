@@ -1,13 +1,13 @@
-import type { Route } from '../router/Route';
+import type { AppRoute } from '../components/router/AppRoute';
 
-const AboutRoute: Route = {
+const AboutRoute: AppRoute = {
   pattern: 'about',
   async onActivation() {
 
   }
 }
 
-const NotAboutRoute: Route = {
+const NotAboutRoute: AppRoute = {
   pattern: 'not-about',
   async onActivation() {
 
