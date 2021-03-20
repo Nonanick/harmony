@@ -45,6 +45,7 @@
     padding: 8px 20px;
     box-sizing: border-box;
     border-radius: 3px;
+    width: var(--width);
   }
 
   :global(.ui-breadcrumb-separator) {
@@ -64,6 +65,7 @@
   class="ui-breadcrumb"
   bind:this={container}
   style="
+  --width: {styles.width ?? defaultStyles.width};
   --background-color : {styles?.background_color ??
     defaultStyles.background_color};
   --separator-color : {styles?.separator_color ??

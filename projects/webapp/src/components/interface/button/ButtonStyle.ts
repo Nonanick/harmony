@@ -6,4 +6,5 @@ export interface ButtonStyle {
   box_shadow?: string;
   width: string;
   text_weight : number;
+  text_underline? : string;
 }

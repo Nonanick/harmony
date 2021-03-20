@@ -23,6 +23,7 @@ import type { SVGIconStyle } from './SVGIconStyle';
     background-color: var(--bg-color);
     overflow: hidden;
     vertical-align: middle;
+    margin: var(--margin);
   }
   :global(.ui-icon > .fix-ratio) {
     position: absolute;
@@ -54,7 +55,8 @@ import type { SVGIconStyle } from './SVGIconStyle';
   --icon-color: {styles.color ?? defaultStyles.color}; 
   --radius: {styles.box_radius ?? defaultStyles.box_radius}; 
   --bg-color : {styles.bg_color ?? defaultStyles.bg_color}; 
-  --aspect-ratio: {styles.aspect_ratio ?? defaultStyles.aspect_ratio}
+  --aspect-ratio: {styles.aspect_ratio ?? defaultStyles.aspect_ratio};
+  --margin: {styles.margin ?? defaultStyles.margin}
   "
 >
   <div class="fix-ratio" />

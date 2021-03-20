@@ -30,6 +30,8 @@ body {
 	--box-shadow-2 : 0px 5px 6px -4px rgba(0,0,0,0.3);
   --box-shadow-3 : 0px 6px 6px -4px rgba(0,0,0,0.3);
   --box-shadow-4 : 0px 8px 6px -4px rgba(0,0,0,0.3);
+
+	--border-radius: 4px;
 }
 
 a {

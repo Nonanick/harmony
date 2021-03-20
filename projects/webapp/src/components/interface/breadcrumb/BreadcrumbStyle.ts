@@ -4,4 +4,5 @@ export interface BreadcrumbStyle {
   separator_size : string;
   separator_weight : number;
   fade_ratio : number;
+  width: string;
 }
