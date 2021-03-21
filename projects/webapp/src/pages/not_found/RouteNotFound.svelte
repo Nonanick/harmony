@@ -4,7 +4,7 @@
   import Link from "../../components/interface/link/Link.svelte";
   import SvgIcon from "../../components/interface/svg_icon/SVGIcon.svelte";
   import CurrentRoute from "../../components/router/CurrentRoute";
-  import { AppRouter } from "../../router/Router";
+  import { fade } from "svelte/transition";
 </script>
 
 <style>
@@ -18,11 +18,9 @@
   h4 {
     font-weight: 300;
   }
-  .page :global(.ui-icon) {
-  }
 </style>
 
-<div class="page">
+<div class="page" transition:fade>
   <h1>Ermm, where are we?</h1>
   <SvgIcon
     src="/img/icons/not.found.svg"
