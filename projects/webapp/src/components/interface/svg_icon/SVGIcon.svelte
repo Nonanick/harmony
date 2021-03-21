@@ -1,11 +1,10 @@
 <script lang="ts">
 import DefaultStyles from '../../style.defaults';
 
-import type { SVGIconProps } from './SVGIconProps';
 
 import type { SVGIconStyle } from './SVGIconStyle';
 
-  export let props: SVGIconProps;
+  export let src: string;
 
   export let styles : Partial<SVGIconStyle> = {};
 
@@ -50,7 +49,7 @@ import type { SVGIconStyle } from './SVGIconStyle';
 <div
   class="ui-icon"
   style="
-  --source: url({props.src}); 
+  --source: url({src}); 
   --size : {styles.size ?? defaultStyles.size}; 
   --icon-color: {styles.color ?? defaultStyles.color}; 
   --radius: {styles.box_radius ?? defaultStyles.box_radius}; 

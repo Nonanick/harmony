@@ -1,7 +1,9 @@
 import App from './App.svelte';
+import CurrentRoute from './components/router/CurrentRoute';
 import { AppRouter } from './router/Router';
 import { HistoryApiStrategy } from './router/strategies/HistoryApiStrategy';
 import * as Routes from './routes/routes';
+import RouteNotFoundPage from './pages/not_found/RouteNotFound.svelte';
 
 AppRouter.setStrategy(new HistoryApiStrategy);
 
@@ -12,6 +14,19 @@ AppRouter.addRoute(
     }
   )
 );
+
+AppRouter.routeNotFound = (url) => {
+  CurrentRoute.set({
+    visibleComponent: RouteNotFoundPage,
+    componentProperties: {
+      url
+    },
+    url: url,
+    queryParams: {},
+    urlParams: {},
+    state: 'route-not-found'
+  });
+};
 
 AppRouter.start();
 

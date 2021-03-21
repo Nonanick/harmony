@@ -23,6 +23,8 @@
     margin-right: 5px;
     margin-bottom: 8px;
     text-decoration: var(--text-underline, underline transparent 2px);
+    overflow: hidden;
+    vertical-align: middle;
   }
   :global(.ui-button:not(:first-child)) {
     margin-left: 5px;

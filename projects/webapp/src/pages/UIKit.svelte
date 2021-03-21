@@ -55,7 +55,7 @@
 </style>
 
 <main>
-	<h1><SvgIcon props={{ src: "/img/harmony.logo.svg" }} /> Harmony UI Kit</h1>
+	<h1><SvgIcon src="/img/harmony.logo.svg" /> Harmony UI Kit</h1>
 	<LineSeparator />
 
 	<sector>
@@ -70,7 +70,7 @@
 				<Breadcrumb separator="▶️" styles={{width: '100%'}}>
 					<BreadcrumbItem class="clickable">
 						<SvgIcon
-							props={{ src: "/img/icons/network.svg" }}
+							src="/img/icons/network.svg"
 							styles={{ margin: "0 7px 0 0" }}
 						/> Menu
 					</BreadcrumbItem>
