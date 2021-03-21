@@ -1,7 +1,7 @@
 import type { AppRoute } from '../../components/router/AppRoute';
 
 export const SubRoute : AppRoute = {
-  pattern : 'subroute',
+  url_pattern : 'subroute',
   async onActivation() {
 
   }

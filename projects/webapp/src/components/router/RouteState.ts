@@ -5,6 +5,6 @@ export interface RouteState {
   queryParams : any;
   urlParams : any;
   state : 'ok' | 'route-not-found' | 'unauthorized-access' | 'faulty-route';
-  visibleComponent : SvelteComponent;
+  visibleComponent : typeof SvelteComponent;
   componentProperties: any;
 }

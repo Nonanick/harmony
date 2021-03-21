@@ -24,7 +24,7 @@ class Router {
     let pureURL = this.stripQueryString(newURL);
 
     for (let tryRoute of this.routes) {
-      const urlMatches = match(tryRoute.pattern);
+      const urlMatches = match(tryRoute.url_pattern);
       let matches = urlMatches(pureURL);
       if (matches) {
         urlParams = matches.params;
@@ -118,6 +118,9 @@ class Router {
     }
 
     this.strategy = strategy;
+    if(this._started) {
+      this.strategy.onURLChange(this.routeChangedHandler);
+    }
   }
 
   addRoute(...route: Route[]) {

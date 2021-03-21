@@ -22,7 +22,7 @@ const WebApp: {
   ProjectRoot: path.join(ProjectRoot, 'projects', 'webapp'),
 
   async Boot() {
-    await WebApp.BootCompiler();
+    WebApp.BootCompiler();
     WebApp.BootWatcher();
   },
 
@@ -61,6 +61,11 @@ const WebApp: {
           compilerOutput = "";
           webappCompiler.stdout?.off("data", listener);
           webappCompiler.stderr?.on("data", (a) => {
+            if(
+              String(data).match(/bundles src\/.* → public\/.*.../)
+            ) {
+              console.log('Bundled:', chalk.red(data));
+            }
             process.stderr.write(a);
           });
         }
