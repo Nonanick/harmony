@@ -2,6 +2,10 @@
   import IconTextButton from "../components/interface/button/IconTextButton.svelte";
   import Link from "../components/interface/link/Link.svelte";
   import SvgIcon from "../components/interface/svg_icon/SVGIcon.svelte";
+  import { CurrentTheme } from "../themes/CurrentTheme";
+  import { DarkTheme } from "../themes/dark.theme";
+  import { LightInterfaceTheme } from "../themes/light.theme";
+  import { fade } from "svelte/transition";
 </script>
 
 <style>
@@ -16,7 +20,7 @@
   }
 </style>
 
-<div class="page">
+<div class="page" transition:fade>
   <SvgIcon src="/img/harmony.logo.svg" styles={{ size: "30vh" }} />
   <div class="message">Welcome to Harmony App!</div>
   <nav>
@@ -31,5 +35,17 @@
         icon_position="right"
       />
     </Link>
+    <IconTextButton
+      icon_src="/img/icons/theme.svg"
+      text="Change theme"
+      icon_position="left"
+      on:click={() => {
+        if ($CurrentTheme.name === "light") {
+          $CurrentTheme = DarkTheme;
+        } else {
+          $CurrentTheme = LightInterfaceTheme;
+        }
+      }}
+    />
   </div>
 </div>

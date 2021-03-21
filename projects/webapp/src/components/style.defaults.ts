@@ -1,4 +1,3 @@
-import { DefaultTheme } from '../themes/theme.default';
 import type { DefaultStylesInterface } from './DefaultStylesInterface';
 import type { BreadcrumbStyle } from './interface/breadcrumb/BreadcrumbStyle';
 import type { ButtonStyle } from './interface/button/ButtonStyle';
@@ -6,17 +5,17 @@ import type { CardStyle } from './interface/card/CardStyle';
 import type { SVGIconStyle } from './interface/svg_icon/SVGIconStyle';
 
 const Breadcrumb: BreadcrumbStyle = {
-  background_color: 'rgba(255,255,255,0.6)',
+  background_color: 'var(--transparent-background-60)',
   fade_ratio: 0.1,
-  separator_color: DefaultTheme.variables['main-color'],
+  separator_color: 'var(--main-color)',
   separator_size: '0.7em',
   separator_weight: 800,
   width: 'auto'
 };
 
 const Button: ButtonStyle = {
-  background_color: DefaultTheme.variables['main-color'],
-  text_color: DefaultTheme.variables['text-on-main-color'],
+  background_color: 'var(--main-color)',
+  text_color: 'var(--text-on-main-color)',
   border: '1px solid transparent',
   padding: '6px 10px',
   width: 'auto',
@@ -25,7 +24,7 @@ const Button: ButtonStyle = {
 
 const Card: CardStyle = {
   width: '30vw',
-  background_color: 'rgba(255,255,255,0.5)',
+  background_color: 'var(--transparent-background-50)',
   image_vertical_alignment: 'center',
   title_font_size: '1.2em',
   title_font_weight: '500',

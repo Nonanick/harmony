@@ -1,6 +1,4 @@
 <script lang="ts">
-import { DefaultTheme } from '../../../themes/theme.default';
-import DefaultStyles from '../../style.defaults';
 
   import Button from "./Button.svelte";
   import type { ButtonStyle } from "./ButtonStyle";
@@ -11,13 +9,13 @@ import DefaultStyles from '../../style.defaults';
 <Button
   styles={{
     background_color: "transparent",
-    text_color: DefaultTheme.variables['main-color'],
-    border: "1px solid " + DefaultTheme.variables['main-color-50'],
+    text_color: "var(--main-color)",
+    border: "1px solid var(--main-color-50)",
     box_shadow: "0",
     ...styles,
   }}
   on:mousedown={() => {
-    styles.background_color = DefaultTheme.variables['main-color-25'];
+    styles.background_color = "var(--main-color-25)";
   }}
   on:mouseup={() => {
     styles.background_color = "transparent";

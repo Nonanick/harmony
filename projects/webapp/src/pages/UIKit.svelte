@@ -6,12 +6,18 @@
 	import OutlineButton from "../components/interface/button/OutlineButton.svelte";
 	import TextButton from "../components/interface/button/TextButton.svelte";
 	import Card from "../components/interface/card/Card.svelte";
+	import IconButton from "../components/interface/icon_button/IconButton.svelte";
 	import LineSeparator from "../components/interface/line_separator/LineSeparator.svelte";
 	import SvgIcon from "../components/interface/svg_icon/SVGIcon.svelte";
+	import { CurrentTheme } from "../themes/CurrentTheme";
+	import { DarkTheme } from "../themes/dark.theme";
+	import { LightInterfaceTheme } from "../themes/light.theme";
+	import { fade } from 'svelte/transition';
+
 </script>
 
 <style>
-	main {
+	div {
 		position: relative;
 		padding: 1em;
 		margin: 0;
@@ -25,6 +31,7 @@
 		padding: 0;
 		margin: 0;
 		width: auto;
+		margin-bottom: 5px;
 	}
 
 	h3 {
@@ -48,14 +55,30 @@
 	}
 
 	@media (min-width: 640px) {
-		main {
+		div {
 			max-width: none;
 		}
 	}
 </style>
 
-<main>
-	<h1><SvgIcon src="/img/harmony.logo.svg" /> Harmony UI Kit</h1>
+<div transition:fade > 
+	<h1>
+		<IconButton
+			src="/img/icons/back.svg"
+			on:click={() => {
+				window.history.go(-1);
+			}}
+		/><SvgIcon src="/img/harmony.logo.svg" /> Harmony UI Kit
+	</h1>
+	<DimmedButton
+		on:click={() => {
+			if ($CurrentTheme.name === "light") {
+				$CurrentTheme = DarkTheme;
+			} else {
+				$CurrentTheme = LightInterfaceTheme;
+			}
+		}}>Change theme</DimmedButton
+	>
 	<LineSeparator />
 
 	<sector>
@@ -67,7 +90,7 @@
 		<!-- Breadcrumb -->
 		<div class="interface-display">
 			<div class="component-display">
-				<Breadcrumb separator="▶️" styles={{width: '100%'}}>
+				<Breadcrumb separator="▶️" styles={{ width: "100%" }}>
 					<BreadcrumbItem class="clickable">
 						<SvgIcon
 							src="/img/icons/network.svg"
@@ -204,7 +227,7 @@
 					/>
 					<span slot="title">Title of the card</span>
 					<span slot="description">Description of the card</span>
-					<div slot="actions">Actions of the card!</div>
+					<span slot="actions">Actions of the card!</span>
 				</Card>
 			</div>
 			<div class="component-properties">
@@ -215,22 +238,23 @@
 						<b>image:</b> place an element with 100% width at the top of the card
 					</li>
 					<li>
-						<b>title:</b> place an element as the title of the card, has increased font size and weight
+						<b>title:</b> place an element as the title of the card, has increased
+						font size and weight
 					</li>
 					<li>
 						<b>description (default slot):</b> place an element without font modifications
 					</li>
 					<li>
-						<b>action:</b> place elements at the bottom of the card, usually interactive elements are placed
-						inside this are
+						<b>action:</b> place elements at the bottom of the card, usually interactive
+						elements are placed inside this are
 					</li>
 				</ul>
 				<h4>➡️ Styling</h4>
 				<ul>
 					<li>
-						<b>background_color:</b> color to be used as the card background,
-						directly inserted into 'background-color' css property, accepts all the
-						values that are valid background colors
+						<b>background_color:</b> color to be used as the card background, directly
+						inserted into 'background-color' css property, accepts all the values
+						that are valid background colors
 					</li>
 					<li>
 						<b>separator_color:</b> color to be used as the separator color, directly
@@ -260,7 +284,7 @@
 		<br />
 		<LineSeparator />
 		<br />
-		
+
 		<div><h4>Chip</h4></div>
 		<div><h4>Circular Frame</h4></div>
 		<div><h4>Context Menu</h4></div>
@@ -277,4 +301,4 @@
 		<div><h4>Tab</h4></div>
 		<div><h4>Tooltip</h4></div>
 	</sector>
-</main>
+</div>
