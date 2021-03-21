@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { loop_guard } from "svelte/internal";
 	import Breadcrumb from "./components/interface/breadcrumb/Breadcrumb.svelte";
 	import BreadcrumbItem from "./components/interface/breadcrumb/BreadcrumbItem.svelte";
 	import Button from "./components/interface/button/Button.svelte";
