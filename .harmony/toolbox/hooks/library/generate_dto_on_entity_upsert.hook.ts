@@ -1,21 +1,35 @@
 import { Entity, IEntity, IPropertyType, Property } from 'clerk';
 import { promises as fs } from 'fs';
 import path from 'path';
+import url from 'url';
 import * as ts from 'typescript';
-import ProjectRoot from '../../../project.root';
+import { WorkspaceRoot } from '../../../workspace.root';
 import { ProjectHook } from '../project.hook';
+import { isEntityDefinition } from './generate_index_on_entity_upsert.hook';
 
 const TypescriptFilePrinter = ts.createPrinter({});
 
-const DTOsFolder = path.join(ProjectRoot, 'projects', 'library', 'src', 'entities', 'dtos');
+const DTOsFolder = path.join(WorkspaceRoot, 'projects', 'library', 'src', 'entities', 'dtos');
 
+let cacheCounter = 0;
 const GenerateDTOOnEntityUpsert: ProjectHook = {
   name: "Generate DTO on entity Update/Insert",
   event: ["add", "change"],
   pattern: [/\.entity\.js$/],
-  async hook({filepath : pathString}) {
-    import(pathString).then(module => {
-      let entity = module.default;
+  async hook({ filepath: pathString }) {
+    import(
+      pathString.replace(/\.js$/,'')
+    ).then(module => {
+      let entity: IEntity | undefined = undefined;
+      for (let identifier in module) {
+        if (isEntityDefinition(module[identifier])) {
+          entity = module[identifier];
+        }
+      }
+
+      if (entity == null) {
+        return new Error('No entity found!');
+      }
       let tsAST = GenerateDTOFromEntity(entity);
       let fileSrc = path.join(
         DTOsFolder, `${entity.name}.dto.ts`
@@ -31,7 +45,9 @@ const GenerateDTOOnEntityUpsert: ProjectHook = {
 
       fs.writeFile(fileSrc, fileContent, { flag: 'w+' });
 
-    })
+    }).catch(err => {
+      console.error('Failed to load entity, could not generate DTO', err);
+    });
 
   }
 };

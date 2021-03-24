@@ -1,4 +1,4 @@
-import type { ProjectWatcher } from '../project.watcher';
+import type { ProjectWatcher } from '../watcher/project.watcher';
 
 export interface ProjectHook {
   name : string;

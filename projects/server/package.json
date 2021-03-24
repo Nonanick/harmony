@@ -1,5 +1,5 @@
 {
-  "name": "harmony-server",
+  "name": "server",
   "version": "0.0.1",
   "description": "Harmony's Serverproject",
   "main": "dist/server.boot.js",

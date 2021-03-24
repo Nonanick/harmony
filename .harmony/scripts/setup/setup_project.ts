@@ -3,7 +3,7 @@ import path from 'path';
 import os from 'os';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import ProjectRoot from '../../project.root';
+import { WorkspaceRoot } from '../../workspace.root';
 
 // Setup Harmony project
 
@@ -41,7 +41,7 @@ inquirer.prompt([
   console.log(chalk.bold(`
 🔌 Configuring workspace and subprojects 'package.json'
 -------------------------------------------------------`));
-  const projectsRootFolder = path.join(ProjectRoot, 'projects');
+  const projectsRootFolder = path.join(WorkspaceRoot, 'projects');
   for (let projectFolderName of ['../','desktop', 'server', 'library', 'webapp',]) {
 
     try {
@@ -68,11 +68,11 @@ inquirer.prompt([
       // Update package.json
       const newPackageConfig = {
         ...packageConfig,
-        name: `${answers.project_name}${projectFolderName != '../' ? '-' + projectFolderName : ''}`,
+        name: `${projectFolderName != '../' ?  oldProjectName : answers.project_name}`,
         version: answers.version,
         author: answers.author,
         license: answers.license,
-        description: `${firstToUpper(answers.project_name)}'s ${projectFolderName != '../' ? firstToUpper(projectFolderName) + 'project' : 'root package'}`
+        description: `${firstToUpper(answers.project_name)}'s ${projectFolderName != '../' ? firstToUpper(projectFolderName) + ' project' : ' root package'}`
       };
 
       // Write changes to disk

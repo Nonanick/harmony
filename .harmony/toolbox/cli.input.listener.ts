@@ -3,31 +3,33 @@ import { Readable } from 'stream';
 
 export class CLIInputListener extends EventEmitter {
 
+  static CommandSentEvent = Symbol('New command inputted');
+
   private inputBuffer: string = "";
 
   private commandSeparator = '\n';
 
-  private inputListener = (inputDataChunk : any) => {
+  private inputListener = (inputDataChunk: any) => {
     let inputText = String(inputDataChunk);
 
     let ioSeparator = inputText.indexOf(this.commandSeparator);
 
-    if(ioSeparator >= 0) {
+    if (ioSeparator >= 0) {
       let beforeLineBreakData = inputText.substr(0, ioSeparator);
       this.inputBuffer += beforeLineBreakData;
-      console.log("Command separator pressed! Command buffered -> ", this.inputBuffer);
       let command = this.inputBuffer.trim();
       this.inputBuffer = "";
       this.emit(
-       command
+        command
       );
+      this.emit(CLIInputListener.CommandSentEvent, command);
     } else {
       this.inputBuffer += inputText;
     }
 
   };
 
-  constructor(input : Readable) {
+  constructor(input: Readable) {
     super();
 
     input.on("data", this.inputListener);

@@ -1,13 +1,13 @@
 import chalk from 'chalk';
 import { ChildProcess, exec } from 'child_process';
 import path from 'path';
-import ProjectRoot from '../../../project.root';
-import { GenerateWebappRoutesArray } from '../../../toolbox/hooks/webapp/generate_route_array';
-import { ProjectWatcher } from '../../../toolbox/project.watcher';
+import { WorkspaceRoot } from '../../../workspace.root';
+import { GenerateWebappRoutesArray } from '../../../../projects/webapp/.harmony/hooks/generate_route_array';
+import { ProjectWatcher } from '../../../toolbox/watcher/project.watcher';
 
 // WebApp Project
 const WebApp: {
-  ProjectRoot: string;
+  WorkspaceRoot: string;
   Boot(): Promise<void>;
 
   BootCompiler(): Promise<void>;
@@ -19,7 +19,7 @@ const WebApp: {
   [name: string]: any
 } = {
 
-  ProjectRoot: path.join(ProjectRoot, 'projects', 'webapp'),
+  WorkspaceRoot: path.join(WorkspaceRoot, 'projects', 'webapp'),
 
   async Boot() {
     WebApp.BootCompiler();
@@ -27,7 +27,7 @@ const WebApp: {
   },
 
   BootWatcher: () => {
-    const watcher = new ProjectWatcher(WebApp.ProjectRoot, 'WebApp');
+    const watcher = new ProjectWatcher(WebApp.WorkspaceRoot, 'WebApp');
     watcher.add(
       GenerateWebappRoutesArray
     );
@@ -38,7 +38,7 @@ const WebApp: {
   },
 
   async BootCompiler() {
-    const webappCompiler = exec('pnpx rollup -c -w', { cwd: WebApp.ProjectRoot });
+    const webappCompiler = exec('pnpx rollup -c -w', { cwd: WebApp.WorkspaceRoot });
     WebApp.Compiler = webappCompiler;
     
     return new Promise((resolve) => {

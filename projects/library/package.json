@@ -1,7 +1,7 @@
 {
-  "name": "harmony-library",
+  "name": "library",
   "version": "0.0.1",
-  "description": "Harmony's Libraryproject",
+  "description": "Harmony's Library project",
   "main": "dist/library.js",
   "types": "dist/library.d.ts",
   "scripts": {

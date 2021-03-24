@@ -1,9 +1,11 @@
 import { exec, ChildProcess } from 'child_process';
 import path from 'path';
-import ProjectRoot from '../../../project.root';
-import { ProjectWatcher } from '../../../toolbox/project.watcher';
+import { WorkspaceRoot } from '../../../workspace.root';
+import { ProjectWatcher } from '../../../toolbox/watcher/project.watcher';
 import chalk from 'chalk';
 import GenerateDTOOnEntityUpsert from '../../../toolbox/hooks/library/generate_dto_on_entity_upsert.hook';
+import GenerateLibraryEntitiesIndex from '../../../toolbox/hooks/library/generate_index_on_entity_upsert.hook';
+import GenerateDTOIndexOnEntityUpsertOrDelete from '../../../toolbox/hooks/library/generate_dto_index_on_entity_upsert';
 
 // Library Project
 const Library: {
@@ -20,7 +22,7 @@ const Library: {
   [name: string]: any
 } = {
 
-  ProjectRoot: path.join(ProjectRoot, 'projects', 'library'),
+  ProjectRoot: path.join(WorkspaceRoot, 'projects', 'library'),
 
   async Boot() {
     await Library.BootCompiler();
@@ -31,7 +33,9 @@ const Library: {
     const watcher = new ProjectWatcher(Library.ProjectRoot, 'Library');
 
     watcher.add(
-      GenerateDTOOnEntityUpsert
+      GenerateDTOOnEntityUpsert,
+      GenerateLibraryEntitiesIndex,
+      GenerateDTOIndexOnEntityUpsertOrDelete,
     );
 
     watcher.start();

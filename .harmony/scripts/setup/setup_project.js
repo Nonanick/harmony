@@ -17,7 +17,7 @@ const path_1 = __importDefault(require("path"));
 const os_1 = __importDefault(require("os"));
 const chalk_1 = __importDefault(require("chalk"));
 const inquirer_1 = __importDefault(require("inquirer"));
-const project_root_1 = __importDefault(require("../../project.root"));
+const workspace_root_1 = require("../../workspace.root");
 // Setup Harmony project
 console.log(`
 ${chalk_1.default.bold('🎵 [Harmony] - Setup a new Mono Repo Project:')}
@@ -51,7 +51,7 @@ inquirer_1.default.prompt([
     console.log(chalk_1.default.bold(`
 🔌 Configuring workspace and subprojects 'package.json'
 -------------------------------------------------------`));
-    const projectsRootFolder = path_1.default.join(project_root_1.default, 'projects');
+    const projectsRootFolder = path_1.default.join(workspace_root_1.WorkspaceRoot, 'projects');
     for (let projectFolderName of ['../', 'desktop', 'server', 'library', 'webapp',]) {
         try {
             const packageFileContents = yield fs_1.promises.readFile(path_1.default.join(projectsRootFolder, projectFolderName, 'package.json'), 'utf-8');
@@ -70,7 +70,7 @@ inquirer_1.default.prompt([
                 }
             }
             // Update package.json
-            const newPackageConfig = Object.assign(Object.assign({}, packageConfig), { name: `${answers.project_name}${projectFolderName != '../' ? '-' + projectFolderName : ''}`, version: answers.version, author: answers.author, license: answers.license, description: `${firstToUpper(answers.project_name)}'s ${projectFolderName != '../' ? firstToUpper(projectFolderName) + 'project' : 'root package'}` });
+            const newPackageConfig = Object.assign(Object.assign({}, packageConfig), { name: `${projectFolderName != '../' ? oldProjectName : answers.project_name}`, version: answers.version, author: answers.author, license: answers.license, description: `${firstToUpper(answers.project_name)}'s ${projectFolderName != '../' ? firstToUpper(projectFolderName) + ' project' : ' root package'}` });
             // Write changes to disk
             yield fs_1.promises.writeFile(path_1.default.join(projectsRootFolder, projectFolderName, 'package.json'), JSON.stringify(newPackageConfig, null, 2));
             console.log(` ❕ Updated project ${projectFolderName != '../' ? projectFolderName : 'workspace root'} package.json file!`);

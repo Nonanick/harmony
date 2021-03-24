@@ -1,3 +1,3 @@
-import type { HarmonyConfig } from './HarmonyConfig';
+import type { HarmonyProjectConfig } from './HarmonyProjectConfig';
 
-export const DefaultConfig : HarmonyConfig = {};
+export const DefaultConfig : HarmonyProjectConfig = {};

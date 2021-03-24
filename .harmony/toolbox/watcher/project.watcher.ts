@@ -1,12 +1,16 @@
 import path from 'path';
 import chokidar, { FSWatcher } from 'chokidar';
-import { ProjectEvent, ProjectHook } from './hooks/project.hook';
+import { ProjectEvent, ProjectHook } from '../hooks/project.hook';
+import { ProjectWatcherConfig } from './ProjectWatcherConfig';
+import { DefaultWatcherConfig } from './watcher_config.default';
 
 export class ProjectWatcher {
 
   protected _delay: number = 2000;
 
   private fsWatcher?: FSWatcher;
+
+  config: ProjectWatcherConfig = DefaultWatcherConfig;
 
   private _hooks: {
     [eventName in ProjectEvent]?: (ProjectHook & { timeout?: any })[]
@@ -15,7 +19,7 @@ export class ProjectWatcher {
   private isInitial: boolean = true;
   private watchFSListener = (evName: ProjectEvent, pathString: string) => {
     let initial = this.isInitial;
-    let normalizedPath = pathString.replaceAll(path.sep,path.posix.sep);
+    let normalizedPath = pathString.replaceAll(path.sep, path.posix.sep);
 
     normalizedPath = path.posix.join(this.projectRoot, normalizedPath);
 
@@ -35,7 +39,21 @@ export class ProjectWatcher {
 
   };
 
-  constructor(private projectRoot: string, private projectName? : string) { }
+  constructor(
+    private projectRoot: string,
+    private projectName?: string,
+    config: Partial<ProjectWatcherConfig> = {}
+  ) {
+    this.config = {
+      ...this.config,
+      ...config
+    };
+
+    this.setDelay(
+      this.config.delay ?? 2500
+    );
+
+  }
 
   get watcher() {
     if (this.fsWatcher == null) {
@@ -44,15 +62,15 @@ export class ProjectWatcher {
     return this.fsWatcher;
   }
 
-  fireHook(hook: ProjectHook & { timeout?: any }, event: ProjectEvent, pathString: string, isInitial : boolean) {
+  fireHook(hook: ProjectHook & { timeout?: any }, event: ProjectEvent, pathString: string, isInitial: boolean) {
     if (hook.timeout == null) {
       hook.timeout = setTimeout(() => {
         console.log('⭐ \x1b[1m[Watcher' + (this.projectName != null ? ': ' + this.projectName : '') + ']\x1b[0m Firing "\x1b[2m' + hook.name + '\x1b[0m"!');
         hook.hook({
-          eventName: event, 
-          filepath: pathString, 
-          isInitial, 
-          watcher : this
+          eventName: event,
+          filepath: pathString,
+          isInitial,
+          watcher: this
         });
         delete hook.timeout;
       }, hook.debounce ?? this._delay);

@@ -1,12 +1,11 @@
+import type {  ProjectHook } from '@harmony';
 import * as ts from 'typescript';
 import { promises as fs } from 'fs';
 import path from 'path';
 import glob from 'glob';
-import { ProjectHook } from '../project.hook';
-import ProjectRoot from '../../../project.root';
 import chalk from 'chalk';
 
-const WebAppRoutesDir = path.join(ProjectRoot, 'projects', 'webapp', 'src', 'routes');
+const WebAppRoutesDir = path.join(__dirname, 'projects', 'webapp', 'src', 'routes'); // @TODO: fix dirname 
 
 export const GenerateWebappRoutesArray: ProjectHook = {
   name: 'Generate WebApp Routes',

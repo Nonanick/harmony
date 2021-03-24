@@ -1,8 +1,8 @@
 import path from 'path';
-import ProjectRoot from '../../../project.root';
+import { WorkspaceRoot } from '../../../workspace.root';
 
 import(
-  path.join(ProjectRoot,'projects','desktop')
+  path.join(WorkspaceRoot, 'projects', 'desktop')
 ).then(desktop => {
 
 }).catch(err => {

@@ -9,18 +9,14 @@ AppRouter.setStrategy(new HistoryApiStrategy);
 
 AppRouter.addRoute(
   ...Object.entries(Routes).map(
-    ([_, r]) => {
-      return r;
-    }
+    ([_, r]) => r
   )
 );
 
 AppRouter.routeNotFound = (url) => {
   CurrentRoute.set({
     visibleComponent: RouteNotFoundPage,
-    componentProperties: {
-      url
-    },
+    componentProperties: { url },
     url: url,
     queryParams: {},
     urlParams: {},

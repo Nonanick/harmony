@@ -1,4 +1,4 @@
-import 'v8-compile-cache';
+//import 'v8-compile-cache';
 import chalk from 'chalk';
 import { CLIInputListener } from '../../toolbox/cli.input.listener';
 import { Library } from './projects/run.library';
@@ -6,11 +6,16 @@ import { Server } from './projects/run.server';
 import { WebApp } from './projects/run.webapp';
 
 console.clear();
+let title = '| HARMONY |';
 
-console.log(chalk.bold(`
-${chalk.black(chalk.bold(chalk.bgCyanBright('        ==================|  Harmony  |====================        ')))}
-Starting projects in development mode!
-`))
+console.log
+  (chalk.bold(`
+${chalk.white(chalk.bold(chalk.bgBlue('='.repeat(Math.floor((process.stdout.columns - title.length) / 2)))))
+    + title
+    + chalk.white(chalk.bold(chalk.bgBlue('='.repeat(Math.floor((process.stdout.columns - title.length) / 2 + (process.stdout.columns - title.length) % 2)))))
+    }\n\n`)
+    + `${chalk.italic('Starting projects in development mode!')}`
+  )
 
 const inputListener = new CLIInputListener(process.stdin);
 
@@ -42,7 +47,7 @@ inputListener.on("exit", _ => {
 export function DemandServerCompilerRestart() {
   console.log(`❕ ${chalk.bold('[Harmony]')} Demanding manual server compiler restart!`);
   Server.RestartCompiler().then(_ => {
-    process.stdout.clearLine(0);
+    //process.stdout.clearLine(0);
   });
 }
 
