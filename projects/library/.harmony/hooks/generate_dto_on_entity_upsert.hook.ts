@@ -7,7 +7,7 @@ export const GenerateDTOOnEntityUpsert: ProjectHook = {
   name: "Generate DTO on entity Update/Insert",
   event: ["add", "change"],
   pattern: [/\.entity\.js$/],
-  async hook({ filepath, project_root }) {
+  async hook({ filepath, root: project_root }) {
     const DTOsFolder = path.join(project_root, 'src', 'entities', 'dtos');
     import(
       filepath.replace(/\.js$/,'')

@@ -1,7 +1,7 @@
 import path from 'path';
 import { promises as fs } from 'fs';
 import chalk from 'chalk';
-import { ReadableStreamListener } from '../toolbox/readable.stream..listener';
+import { ReadableStreamListener } from '../toolbox/readable.stream.listener';
 import { HarmonyManagerConfig } from '../config/manager/HarmonyManagerConfig';
 import { ManagerCommandListener } from './commands/ManagerCommandListener';
 import { DefaultManagerConfig } from '../config/manager/config.default';
@@ -33,8 +33,7 @@ export class HarmonyManager {
     this.started = true;
 
     if (this.config.onInit?.displayCLIHeader === true) {
-      console.clear();
-      console.log(this.outputManagerHeader());
+      this.outputManagerHeader();
     }
 
     this.startListeningForInput();
@@ -80,7 +79,7 @@ export class HarmonyManager {
     console.log('Spawning new project manager for', packageConfig.name);
 
     this.projectManagers[packageConfig.name] = new ProjectManager(
-      path, packageConfig
+      path, packageConfig, this
     );
 
     if(this.started) {
@@ -97,9 +96,10 @@ export class HarmonyManager {
   }
 
   outputManagerHeader() {
-    const headerContent = '| HARMONY WORKSPACE MANAGER |';
+    console.clear();
 
-    return (
+    const headerContent = '| HARMONY WORKSPACE MANAGER |';
+    console.log(
       `${chalk.white(chalk.bold(chalk.bgBlue('='.repeat(Math.floor((process.stdout.columns - headerContent.length) / 2)))))
       + headerContent
       + chalk.white(chalk.bold(chalk.bgBlue('='.repeat(Math.floor((process.stdout.columns - headerContent.length) / 2 + (process.stdout.columns - headerContent.length) % 2)))))

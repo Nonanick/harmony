@@ -2,9 +2,9 @@ import { exec, ChildProcess } from 'child_process';
 import { Worker } from 'worker_threads';
 import path from 'path';
 import {WorkspaceRoot} from '../../../workspace.root';
-import { ProjectWatcher } from '../../../watcher/project.watcher';
+import { ProjectWatcher } from '../../../watcher/ProjectWatcher';
 import chalk from 'chalk';
-import { RestartServerOnDistFolderChanges } from '../../../toolbox/hooks/server/restart_on_dist_changes';
+import { RestartServerOnDistFolderChanges } from '../../../../projects/server/.harmony/hooks/restart_on_dist_changes';
 
 const compileErrorListener = (data: any) => {
   let errorMatch = String(data).match(/(?<source_file>[\s\S]*?)\((?<line>[0-9]*?),[0-9]*?\): error (?<error_code>\w*?): (?<error_message>.*)?./);

@@ -7,7 +7,7 @@ const GenerateDTOIndexOnEntityUpsertOrDelete: ProjectHook = {
   name: 'Generate DTO index on entity update/insert/delete',
   event: ["add", "change", "unlink"],
   pattern: [/dtos\/.*\.dto\.ts$/],
-  async hook({ project_root }) {
+  async hook({ root: project_root }) {
     const DTOsFolder = path.join(project_root, 'src', 'entities', 'dtos');
     glob('**/*.dto.ts', {
       cwd: DTOsFolder,

@@ -1,9 +1,10 @@
 import path from 'path';
 import chokidar, { FSWatcher } from 'chokidar';
-import { ProjectEvent, ProjectHook } from '../toolbox/hooks/project.hook';
+import { ProjectEvent, WatcherHook } from './WatcherHook';
 import { ProjectWatcherConfig } from '../config/watcher/ProjectWatcherConfig';
 import { DefaultWatcherConfig } from '../config/watcher/watcher_config.default';
 import { WorkspaceRoot } from '../workspace.root';
+import { ProjectManager } from '../manager/project/ProjectManager';
 
 export class ProjectWatcher {
 
@@ -14,10 +15,11 @@ export class ProjectWatcher {
   config: ProjectWatcherConfig = DefaultWatcherConfig;
 
   private _hooks: {
-    [eventName in ProjectEvent]?: (ProjectHook & { timeout?: any })[]
+    [eventName in ProjectEvent]?: (WatcherHook & { timeout?: any })[]
   } = {};
 
   private isInitial: boolean = true;
+
   private watchFSListener = (evName: ProjectEvent, pathString: string) => {
     let initial = this.isInitial;
     let normalizedPath = pathString.replaceAll(path.sep, path.posix.sep);
@@ -37,11 +39,11 @@ export class ProjectWatcher {
         }
       });
     }
-
   };
 
   constructor(
     private projectRoot: string,
+    public projectManager : ProjectManager,
     private projectName?: string,
     config: Partial<ProjectWatcherConfig> = {}
   ) {
@@ -63,7 +65,7 @@ export class ProjectWatcher {
     return this.fsWatcher;
   }
 
-  fireHook(hook: ProjectHook & { timeout?: any }, event: ProjectEvent, pathString: string, isInitial: boolean) {
+  fireHook(hook: WatcherHook & { timeout?: any }, event: ProjectEvent, pathString: string, isInitial: boolean) {
     if (hook.timeout == null) {
       hook.timeout = setTimeout(() => {
         console.log('⭐ \x1b[1m[Watcher' + (this.projectName != null ? ': ' + this.projectName : '') + ']\x1b[0m Firing "\x1b[2m' + hook.name + '\x1b[0m"!');
@@ -72,14 +74,17 @@ export class ProjectWatcher {
           filepath: pathString,
           isInitial,
           watcher: this,
-          project_root : this.projectRoot,
-          workspace_root : WorkspaceRoot
+          workspace_root : WorkspaceRoot,
+          workspace_manager : this.projectManager.harmony,
+          root : this.projectRoot,
+          manager : this.projectManager,
         });
         delete hook.timeout;
       }, hook.debounce ?? this._delay);
     }
   }
-  pathMatchesHookPattern(pathString: string, hook: ProjectHook): boolean {
+  
+  pathMatchesHookPattern(pathString: string, hook: WatcherHook): boolean {
 
     if (hook.mustMatchAllPatterns === true) {
       if (Array.isArray(hook.pattern)) {
@@ -112,7 +117,7 @@ export class ProjectWatcher {
     this._delay = timeInMili > 0 ? timeInMili : 0;
   }
 
-  add(...hooks: ProjectHook[]) {
+  add(...hooks: WatcherHook[]) {
     for (let hook of hooks) {
       if (Array.isArray(hook.event)) {
         for (let ev of hook.event) {

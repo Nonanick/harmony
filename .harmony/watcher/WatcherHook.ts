@@ -1,6 +1,8 @@
-import type { ProjectWatcher } from '../../watcher/project.watcher';
+import { HarmonyManager } from '../manager/HarmonyManager';
+import { ProjectManager } from '../manager/project/ProjectManager';
+import type { ProjectWatcher } from './ProjectWatcher';
 
-export interface ProjectHook {
+export interface WatcherHook {
   name: string;
   project?: string | string[];
   event: ProjectEvent & string | ProjectEvent[];
@@ -11,9 +13,11 @@ export interface ProjectHook {
     eventName: ProjectEvent,
     filepath: string,
     isInitial: boolean,
+    root: string,
+    manager : ProjectManager,
     watcher: ProjectWatcher,
-    project_root: string,
     workspace_root: string,
+    workspace_manager : HarmonyManager,
   }) => Promise<void>;
 }
 

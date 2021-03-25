@@ -9,7 +9,7 @@ export const GenerateLibraryEntitiesIndex: ProjectHook = {
   event: 'all',
   pattern: [/dist\/entities\/definitions\/.*\.entity\.js$/],
   mustMatchAllPatterns: true,
-  async hook({ project_root }) {
+  async hook({ root: project_root }) {
     const LibraryEntityDir = path.join(project_root, 'dist', 'entities', 'definitions');
 
     glob('**/*.entity.js', {

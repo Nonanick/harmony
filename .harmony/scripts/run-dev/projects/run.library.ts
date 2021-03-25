@@ -1,7 +1,7 @@
 import { exec, ChildProcess } from 'child_process';
 import path from 'path';
 import { WorkspaceRoot } from '../../../workspace.root';
-import { ProjectWatcher } from '../../../watcher/project.watcher';
+import { ProjectWatcher } from '../../../watcher/ProjectWatcher';
 import chalk from 'chalk';
 
 // Library Project
