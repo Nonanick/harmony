@@ -5,5 +5,4 @@ const FastifyAdapter = new Adapter({
   logger : true,
 });
 
-
 export default FastifyAdapter;

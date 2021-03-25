@@ -9,12 +9,13 @@ import type { HarmonyScript } from '../../scripts/HarmonyScript';
 import { RunHarmonyScriptOptions } from '../../scripts/RunHarmonyScriptOptions';
 import { ProjectWatcher } from '../../watcher/ProjectWatcher';
 import type { WatcherHook } from '../../watcher/WatcherHook';
-import type { ManagerCommandListener } from '../commands/ManagerCommandListener';
+import type { HarmonyCommand } from '../commands/HarmonyCommand';
 import { RunHarmonyCommandOptions } from '../commands/RunHarmonyCommandOptions';
 import { HarmonyManager } from '../HarmonyManager';
-import { ProjectSubprocess, WorkerSubprocess } from './ProjectSubprocess';
+import { ChildSubprocess, ProjectSubprocess, WorkerSubprocess } from './ProjectSubprocess';
 import { SpawnProcessOptions } from './SpawnProcessOptions';
 import { SpawnWorkerOptions } from './SpawnWorkerOptions';
+import { isHarmonyHook, isHarmonyScript } from '../../toolbox/validation';
 import chalk from 'chalk';
 
 export class ProjectManager {
@@ -27,13 +28,13 @@ export class ProjectManager {
     [name: string]: HarmonyScript
   } = {};
 
-  commands: ManagerCommandListener[] = [];
+  commands: HarmonyCommand[] = [];
 
   config: ProjectManagerConfig = ProjectManagerDefaultConfig;
 
   watcher?: ProjectWatcher;
 
-  subprocesses: { [name: string]: ProjectSubprocess & { created_at: Date; }; } = {};
+  subprocesses: { [name: string]: ProjectSubprocess & { created_at: Date; buffers: { [name: string]: string } }; } = {};
 
   constructor(
     public root: string,
@@ -72,26 +73,24 @@ export class ProjectManager {
 
     console.log(
       chalk.bold.hex('#009991')(
-        `⚙️  [${this.packageJson.name.charAt(0).toLocaleUpperCase() + this.packageJson.name.substr(1)}]`
-      ),'Project'
+        `---[${this.packageJson.name.charAt(0).toLocaleUpperCase() + this.packageJson.name.substr(1)}]`
+      )
     );
 
     if (this.hooks.length > 0) {
-      console.log(
-        chalk.magentaBright(' ➡️  Hooks\n') + `${this.hooks.map(h => ' - ' + h.name).join(';\n')};`
+      console.log('➡',
+        chalk.magentaBright(' Hooks\n') + `${this.hooks.map(h => ' - ' + h.name).join(';\n')};`
       );
     }
 
     if (Object.values(this.scripts).length > 0) {
-      console.log(
-        chalk.green(' ➡️  Scripts\n') + `${
-          Object.values(this.scripts).map(s => ` - ${(s.title ?? s.name)} (${chalk.bold('run ' + s.name)} || ${chalk.bold(`run @${this.packageJson.name} ${s.name}`)})`).join('\n')}`
+      console.log('➡',
+        chalk.green(' Scripts\n') + `${Object.values(this.scripts).map(s => ` - ${(s.title ?? s.name)} (${chalk.bold('run ' + s.name)} || ${chalk.bold(`run @${this.packageJson.name} ${s.name}`)})`).join('\n')}`
       );
     }
 
     if (this.commands.length > 0) {
-      console.log(chalk.blueBright(' ➡️  Commands\n') + `${
-        this.commands.map(c => ` - ${c.name} (${chalk.bold(`@${this.packageJson.name} ${c.command.toString()}`)})`).join(';\n')}`);
+      console.log('➡', chalk.blueBright(' Commands\n') + `${this.commands.map(c => ` - ${c.name} (${chalk.bold(`@${this.packageJson.name} ${c.command.toString()}`)})`).join(';\n')}`);
     }
     console.log();
   }
@@ -123,10 +122,15 @@ export class ProjectManager {
         for (let filepath of matches) {
           let fullpath = path.join(this.root, this.config.harmony_folder, this.config.hooks_folder, filepath);
           await import(fullpath).then(hooks => {
+            let count = 0;
             for (let exportedHook in hooks) {
-              if (typeof hooks[exportedHook] === "object") {
+              if (isHarmonyHook(hooks[exportedHook])) {
                 this.addHook(hooks[exportedHook]);
+                count++;
               }
+            }
+            if (count === 0) {
+              console.warn(`⚠️  [Manager:${chalk.bold(this.packageJson.name)}] No valid hooks found in file "${filepath}"!\n`);
             }
           });
         }
@@ -150,10 +154,15 @@ export class ProjectManager {
         for (let filepath of matches) {
           let fullpath = path.join(this.root, this.config.harmony_folder, this.config.scripts_folder, filepath);
           await import(fullpath).then(scripts => {
+            let count = 0;
             for (let exportedScript in scripts) {
-              if (typeof scripts[exportedScript] === "object") {
+              if (isHarmonyScript(scripts[exportedScript])) {
                 this.addScript(scripts[exportedScript]);
+                count++;
               }
+            }
+            if (count === 0) {
+              console.warn(`⚠️  [Manager:${chalk.bold(this.packageJson.name)}] No valid scripts found in file "${filepath}"!\n`);
             }
           });
         }
@@ -219,7 +228,7 @@ export class ProjectManager {
 
   }
 
-  addCommand(...command: ManagerCommandListener[]) {
+  addCommand(...command: HarmonyCommand[]) {
     this.commands = [
       ...this.commands,
       ...command
@@ -227,10 +236,10 @@ export class ProjectManager {
   }
 
   runCommand(
-    command: string | ManagerCommandListener, args: any,
+    command: string | HarmonyCommand, args: any,
     options?: RunHarmonyCommandOptions
   ) {
-
+    console.log('RUN COMMAND', command);
   }
 
   async spawnWorker(args: SpawnWorkerOptions) {
@@ -238,25 +247,29 @@ export class ProjectManager {
     if (this.subprocesses[args.name] != null) {
       await this.killSubprocess(args.name);
     }
+    try {
+      let newWorker = new Worker(args.path, {
+        argv: Object.entries(args.args).flat(1).map(unknown => String(unknown)),
+        stderr: (args.io?.err ?? 'pipe') != 'pipe' ? true : false,
+        stdout: (args.io?.out ?? 'pipe') != 'pipe' ? true : false,
+        stdin: (args.io?.in ?? 'pipe') != 'pipe' ? true : false,
+        env: process.env,
+      });
 
-    let newWorker = new Worker(args.path, {
-      argv: args.args,
-      stderr: args.io?.err != 'pipe' ? true : false,
-      stdout: args.io?.out != 'pipe' ? true : false,
-      stdin: args.io?.in != 'pipe' ? true : false,
-      env: process.env,
-    });
+      let newSubprocess: WorkerSubprocess & { created_at: Date; buffers: { [name: string]: string } } = {
+        type: 'worker',
+        process: newWorker,
+        spawn: args,
+        created_at: new Date(),
+        buffers: {},
+      };
 
-    let newSubprocess: WorkerSubprocess & { created_at: Date } = {
-      type: 'worker',
-      process: newWorker,
-      spawn: args,
-      created_at: new Date(),
-    };
+      this.subprocesses[args.name] = newSubprocess;
 
-    this.subprocesses[args.name] = newSubprocess;
-
-    return newSubprocess;
+      return newSubprocess;
+    } catch (err) {
+      console.error('Failed to launch worker!', err);
+    }
   }
 
   async restartSubprocess(name: string) {
@@ -272,7 +285,7 @@ export class ProjectManager {
         await this.spawnWorker(subprocess.spawn);
         break;
       case 'process':
-        await this.spawnProcess(subprocess.spawn);
+        await this.spawnChildProcess(subprocess.spawn);
         break;
     }
   }
@@ -297,18 +310,57 @@ export class ProjectManager {
     delete this.subprocesses[name];
   }
 
-  async spawnProcess(args: SpawnProcessOptions) {
+  async spawnChildProcess(args: SpawnProcessOptions) {
 
     if (this.subprocesses[args.name] != null) {
       await this.killSubprocess(args.name);
     }
 
-    let newSubprocess = exec(args.launch, {
+    let newChild = exec(args.launch, {
       cwd: args.cwd ?? this.root,
       env: process.env,
     });
 
-    return newSubprocess;
+    let newSubprocess: ChildSubprocess & { created_at: Date; buffers: { [name: string]: string } } = {
+      type: 'process',
+      process: newChild,
+      spawn: args,
+      created_at: new Date(),
+      buffers: {},
+    };
+
+    if (args.out) {
+      newChild.stdout?.on("data", (data) => {
+        if (newSubprocess.buffers['out'] == null) newSubprocess.buffers['out'] = '';
+        newSubprocess.buffers['out'] += String(data);
+        if (args.out?.filter != null) {
+          let filtered = args.out.filter(data);
+          if (filtered !== false) {
+            (args.out.pipeTo ?? process.stdout).write(filtered);
+          }
+        } else {
+          (args.out?.pipeTo ?? process.stdout).write(data);
+        }
+      });
+    }
+
+    if (args.err) {
+      newChild.stderr?.on("data", (data) => {
+        if (newSubprocess.buffers['err'] == null) newSubprocess.buffers['err'] = '';
+        newSubprocess.buffers['err'] += String(data);
+        if (args.err?.filter != null) {
+          let filtered = args.err.filter(data);
+          if (filtered !== false) {
+            (args.err.pipeTo ?? process.stderr).write(filtered);
+          }
+        } else {
+          (args.err?.pipeTo ?? process.stderr).write(data);
+        }
+      });
+    }
+
+
+    return newChild;
 
   }
 }

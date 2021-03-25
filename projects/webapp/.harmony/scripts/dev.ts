@@ -5,13 +5,13 @@ export const DevRunWebApp : HarmonyScript = {
   name : 'dev',
   async run({ manager }) {
 
-    await manager.spawnProcess({
+    await manager.spawnChildProcess({
       title : 'WebApp Rollup',
       name : 'webapp-rollup',
       launch : 'pnpx rollup -c -w'
     });
 
-    await manager.spawnProcess({
+    await manager.spawnChildProcess({
       title : 'WebApp HTTP Server',
       name : 'webapp-server',
       launch : 'pnpx sirv ./public'

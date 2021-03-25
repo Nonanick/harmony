@@ -1,8 +1,8 @@
-import { ManagerCommandListener } from './ManagerCommandListener';
+import { HarmonyCommand } from './HarmonyCommand';
 
-export const StartDevelopmentEnvironment : ManagerCommandListener = {
+export const StartDevelopmentEnvironment : HarmonyCommand = {
   name : 'Start project in development environment',
-  command : /dev(\s(?<project_name>\w*?))?/,
+  command : /^dev(\s(?<project_name>\w*?))?/,
   async run(args : any) {
     console.log('Will now run in dev mode ', args);
     // Locate targeted project(s)

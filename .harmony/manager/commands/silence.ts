@@ -1,8 +1,8 @@
-import { ManagerCommandListener } from './ManagerCommandListener';
+import { HarmonyCommand } from './HarmonyCommand';
 
-export const SilenceOutputFromProject : ManagerCommandListener = {
+export const SilenceOutputFromProject : HarmonyCommand = {
   name : 'Silence output from project',
-  command : /silence (?<project_name>\w*?)\s?(?<when_matches>.*?)?/,
+  command : /^silence (?<project_name>\w*?)\s?(?<when_matches>.*?)?/,
   async run(args : any) {
     // Locate project outputs
 

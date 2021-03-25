@@ -3,9 +3,11 @@ import { promises as fs } from 'fs';
 import chalk from 'chalk';
 import { ReadableStreamListener } from '../toolbox/readable.stream.listener';
 import { HarmonyManagerConfig } from '../config/manager/HarmonyManagerConfig';
-import { ManagerCommandListener } from './commands/ManagerCommandListener';
+import { HarmonyCommand } from './commands/HarmonyCommand';
 import { DefaultManagerConfig } from '../config/manager/config.default';
 import { ProjectManager } from './project/ProjectManager';
+import { isHarmonyCommand } from '../toolbox/validation';
+import { WorkspaceRoot } from '../workspace.root';
 
 export class HarmonyManager {
 
@@ -13,7 +15,7 @@ export class HarmonyManager {
 
   stdinListener?: ReadableStreamListener;
 
-  managerCLICommands: ManagerCommandListener[] = [];
+  commands: HarmonyCommand[] = [];
 
   projectManagers: {
     [projectName: string]: ProjectManager
@@ -40,6 +42,34 @@ export class HarmonyManager {
 
     await this.searchForProjects();
 
+    await this.loadCommands();
+
+  }
+
+  async loadCommands() {
+    let lookupIn = path.resolve(__dirname, 'commands');
+    return fs.readdir(lookupIn, { withFileTypes: true })
+      .then(async folderContents => {
+        for (let file of folderContents) {
+          if (file.isFile() && file.name.match(/\.js$/)) {
+            import(
+              path.join(lookupIn, file.name)
+            ).then(exported => {
+              for (let commandName in exported) {
+                if (isHarmonyCommand(exported[commandName])) {
+                  this.commands.push(exported[commandName]);
+                }
+              }
+            }).catch(err => {
+              console.error('Error importing command file!');
+            });
+          }
+        }
+      }).then(_ => {
+        console.log(
+          '✅', chalk.bold('Finished loading commands (' + this.commands.length + ')!')
+        );
+      });
   }
 
   async searchForProjects() {
@@ -63,7 +93,7 @@ export class HarmonyManager {
         }
       }).then(_ => {
         console.log(
-          '✅', chalk.bold(' Finished loading projects!')
+          '✅', chalk.bold('Finished loading projects (' + Object.keys(this.projectManagers).length + ')!')
         );
       });
   }
@@ -102,10 +132,46 @@ export class HarmonyManager {
           console.log('command directed to project', targetedCommandMatch.groups!.project_name);
           return;
         }
-        // Check for harmony commands
 
-        // Check for project commands
-        console.log("User sent a new command to harmony:", command);
+        // Check for harmony commands
+        for (let cmd of this.commands) {
+          let matchesWithCmd: RegExpMatchArray | null | true = null;
+
+          if (cmd.command instanceof RegExp) {
+            matchesWithCmd = command.match(cmd.command)
+          }
+
+          if (typeof cmd.command === "string") {
+            matchesWithCmd = true;
+          }
+
+          if (Array.isArray(cmd.command)) {
+            for (let subMatcher of cmd.command) {
+              if (subMatcher instanceof RegExp) {
+                matchesWithCmd = command.match(subMatcher)
+              }
+
+              if (typeof subMatcher === "string") {
+                matchesWithCmd = true;
+              }
+
+              if (matchesWithCmd != null) {
+                break;
+              }
+            }
+          }
+
+          if (matchesWithCmd != null) {
+            cmd.run({
+              harmony : this,
+              manager : {} as any,
+              root : WorkspaceRoot,
+              workers : {},
+              commandArgs : (typeof matchesWithCmd === "object" ? matchesWithCmd.groups ?? {} : {})
+            });
+          }
+        }
+
       }
     );
   }
@@ -117,7 +183,7 @@ export class HarmonyManager {
     console.log('\n🍃',
       // `${chalk.bgBlueBright.bold(' '.repeat(Math.floor((process.stdout.columns - headerContent.length) / 2)))
       chalk.bold(headerContent)
-      + chalk.blueBright.bold('-'.repeat((process.stdout.columns - headerContent.length - 5)))
+      + chalk.white.bgHex("#009091").bold('='.repeat((process.stdout.columns - headerContent.length - 5)))
       + '\n'
     );
   }

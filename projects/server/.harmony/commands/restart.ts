@@ -1,6 +1,6 @@
-import { ManagerCommandListener } from '@harmony';
+import { HarmonyCommand } from '@harmony';
 
-export const RestartWorkerCommand : ManagerCommandListener = {
+export const RestartWorkerCommand : HarmonyCommand = {
   name : 'Restart server worker',
   command : 'restart',
   run() {
