@@ -2,8 +2,8 @@ import { HarmonyScript } from '@harmony';
 import path from 'path';
 
 export const DevServerScript: HarmonyScript = {
-  name: 'server-worker',
-  title: 'Server Worker',
+  name: 'dev',
+  title: 'Server Worker [Development]',
   run: ({ manager, root, args }) => {
     manager.spawnWorker({
       name : 'server',

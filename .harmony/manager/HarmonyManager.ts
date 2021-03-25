@@ -52,7 +52,7 @@ export class HarmonyManager {
               let packageJSONContent = await fs.readFile(
                 path.join(lookupIn, folderInfo.name, 'package.json'), 'utf-8'
               );
-              this.addProject(
+              await this.addProject(
                 path.join(lookupIn, folderInfo.name),
                 JSON.parse(packageJSONContent)
               );
@@ -61,6 +61,10 @@ export class HarmonyManager {
             }
           }
         }
+      }).then(_ => {
+        console.log(
+          '✅', chalk.bold(' Finished loading projects!')
+        );
       });
   }
 
@@ -91,10 +95,10 @@ export class HarmonyManager {
 
     this.stdinListener.on(
       ReadableStreamListener.CommandSentEvent,
-      (command : string) => {
+      (command: string) => {
         // See if it's project specific script
         let targetedCommandMatch = command.match(/^@(?<project_name>\w*)/);
-        if(targetedCommandMatch) {
+        if (targetedCommandMatch) {
           console.log('command directed to project', targetedCommandMatch.groups!.project_name);
           return;
         }
@@ -109,12 +113,12 @@ export class HarmonyManager {
   outputManagerHeader() {
     console.clear();
 
-    const headerContent = '| HARMONY WORKSPACE MANAGER |';
-    console.log(
-      `${chalk.white(chalk.bold(chalk.bgBlue('='.repeat(Math.floor((process.stdout.columns - headerContent.length) / 2)))))
-      + headerContent
-      + chalk.white(chalk.bold(chalk.bgBlue('='.repeat(Math.floor((process.stdout.columns - headerContent.length) / 2 + (process.stdout.columns - headerContent.length) % 2)))))
-      }\n\n`
+    const headerContent = '[ Harmony\'s Workspace ] ';
+    console.log('\n🍃',
+      // `${chalk.bgBlueBright.bold(' '.repeat(Math.floor((process.stdout.columns - headerContent.length) / 2)))
+      chalk.bold(headerContent)
+      + chalk.blueBright.bold('-'.repeat((process.stdout.columns - headerContent.length - 5)))
+      + '\n'
     );
   }
 }

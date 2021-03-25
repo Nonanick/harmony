@@ -1,4 +1,5 @@
 import { Worker } from 'worker_threads';
+import { exec } from 'child_process';
 import { promises as fs } from 'fs';
 import glob from 'glob';
 import path from 'path';
@@ -70,23 +71,27 @@ export class ProjectManager {
     this.started = true;
 
     console.log(
-      '✅', chalk.bold(`[${(this.packageJson.title ?? this.packageJson.name).toLocaleUpperCase()}]`) + ' Finished Loading Project Manager !'
+      chalk.bold.hex('#009991')(
+        `⚙️  [${this.packageJson.name.charAt(0).toLocaleUpperCase() + this.packageJson.name.substr(1)}]`
+      ),'Project'
     );
 
     if (this.hooks.length > 0) {
       console.log(
-        chalk.magenta(' ➡️  Hooks\n') + `${this.hooks.map(h => ' - ' + h.name).join(';\n')};`
+        chalk.magentaBright(' ➡️  Hooks\n') + `${this.hooks.map(h => ' - ' + h.name).join(';\n')};`
       );
     }
 
     if (Object.values(this.scripts).length > 0) {
       console.log(
-        chalk.green(' ➡️  Scripts\n') + `${Object.values(this.scripts).map(s => ' - ' + (s.title ?? s.name)).join('\n')}`
+        chalk.green(' ➡️  Scripts\n') + `${
+          Object.values(this.scripts).map(s => ` - ${(s.title ?? s.name)} (${chalk.bold('run ' + s.name)} || ${chalk.bold(`run @${this.packageJson.name} ${s.name}`)})`).join('\n')}`
       );
     }
 
     if (this.commands.length > 0) {
-      console.log(chalk.blue(' ➡️  Commands\n') + `${this.commands.map(c => ' - ' + c.name).join(';\n')}`);
+      console.log(chalk.blueBright(' ➡️  Commands\n') + `${
+        this.commands.map(c => ` - ${c.name} (${chalk.bold(`@${this.packageJson.name} ${c.command.toString()}`)})`).join(';\n')}`);
     }
     console.log();
   }
@@ -293,6 +298,17 @@ export class ProjectManager {
   }
 
   async spawnProcess(args: SpawnProcessOptions) {
+
+    if (this.subprocesses[args.name] != null) {
+      await this.killSubprocess(args.name);
+    }
+
+    let newSubprocess = exec(args.launch, {
+      cwd: args.cwd ?? this.root,
+      env: process.env,
+    });
+
+    return newSubprocess;
 
   }
 }
