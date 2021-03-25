@@ -1,18 +1,18 @@
 import { EventEmitter } from 'events';
 import { Readable } from 'stream';
 
-export class CLIInputListener extends EventEmitter {
+export class ReadableStreamListener extends EventEmitter {
 
   static CommandSentEvent = Symbol('New command inputted');
 
   private inputBuffer: string = "";
 
-  private commandSeparator = '\n';
+  private sendCommandTrigger = '\n';
 
   private inputListener = (inputDataChunk: any) => {
     let inputText = String(inputDataChunk);
 
-    let ioSeparator = inputText.indexOf(this.commandSeparator);
+    let ioSeparator = inputText.indexOf(this.sendCommandTrigger);
 
     if (ioSeparator >= 0) {
       let beforeLineBreakData = inputText.substr(0, ioSeparator);
@@ -22,12 +22,16 @@ export class CLIInputListener extends EventEmitter {
       this.emit(
         command
       );
-      this.emit(CLIInputListener.CommandSentEvent, command);
+      this.emit(ReadableStreamListener.CommandSentEvent, command);
     } else {
       this.inputBuffer += inputText;
     }
 
   };
+
+  setTrigger(trigger : string) {
+    this.sendCommandTrigger = trigger;
+  }
 
   constructor(input: Readable) {
     super();

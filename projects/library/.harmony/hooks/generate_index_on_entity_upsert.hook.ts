@@ -1,18 +1,16 @@
+import type { ProjectHook } from '@harmony';
 import { promises as fs } from 'fs';
 import path from 'path';
 import glob from 'glob';
-import { ProjectHook } from '../project.hook';
-import { WorkspaceRoot} from '../../../workspace.root';
 import { IEntity } from 'clerk';
-
-const LibraryEntityDir = path.join(WorkspaceRoot, 'projects', 'library', 'dist', 'entities', 'definitions');
 
 export const GenerateLibraryEntitiesIndex: ProjectHook = {
   name: 'Generate Entities index file',
   event: 'all',
   pattern: [/dist\/entities\/definitions\/.*\.entity\.js$/],
   mustMatchAllPatterns: true,
-  async hook() {
+  async hook({ project_root }) {
+    const LibraryEntityDir = path.join(project_root, 'dist', 'entities', 'definitions');
 
     glob('**/*.entity.js', {
       cwd: LibraryEntityDir,
@@ -38,7 +36,7 @@ export const GenerateLibraryEntitiesIndex: ProjectHook = {
         });
       }
 
-      let entityIndexPath = path.join(WorkspaceRoot, 'projects','library','src','entities','index.ts');
+      let entityIndexPath = path.join(project_root, 'src','entities','index.ts');
       let indexContent="// # Entities barrel auto generated file\n";
       for(let newImport of identifiers) {
         indexContent += `export { ${newImport.identifier} } from './definitions/${newImport.filepath.replace(/\.js$/,'')}';\n`; 
@@ -63,5 +61,3 @@ export function isEntityDefinition(obj: any): obj is IEntity {
     && (typeof obj.filters === "object" || obj.filters === undefined)
   )
 }
-
-export default GenerateLibraryEntitiesIndex;

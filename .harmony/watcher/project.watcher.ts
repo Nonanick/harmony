@@ -1,8 +1,9 @@
 import path from 'path';
 import chokidar, { FSWatcher } from 'chokidar';
-import { ProjectEvent, ProjectHook } from '../hooks/project.hook';
-import { ProjectWatcherConfig } from './ProjectWatcherConfig';
-import { DefaultWatcherConfig } from './watcher_config.default';
+import { ProjectEvent, ProjectHook } from '../toolbox/hooks/project.hook';
+import { ProjectWatcherConfig } from '../config/watcher/ProjectWatcherConfig';
+import { DefaultWatcherConfig } from '../config/watcher/watcher_config.default';
+import { WorkspaceRoot } from '../workspace.root';
 
 export class ProjectWatcher {
 
@@ -70,7 +71,9 @@ export class ProjectWatcher {
           eventName: event,
           filepath: pathString,
           isInitial,
-          watcher: this
+          watcher: this,
+          project_root : this.projectRoot,
+          workspace_root : WorkspaceRoot
         });
         delete hook.timeout;
       }, hook.debounce ?? this._delay);

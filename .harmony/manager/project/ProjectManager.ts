@@ -1,10 +1,10 @@
 import path from 'path';
 import { promises as fs } from 'fs';
 import glob from 'glob';
-import { ProjectManagerConfig } from './config/ProjectManagerConfig';
-import { ProjectManagerDefaultConfig } from './config/project_config.default';
-import { ProjectHook } from '../toolbox/hooks/project.hook';
-import { ProjectWatcher } from '../toolbox/watcher/project.watcher';
+import { ProjectManagerConfig } from '../../config/project_manager/ProjectManagerConfig';
+import { ProjectManagerDefaultConfig } from '../../config/project_manager/project_config.default';
+import { ProjectHook } from '../../toolbox/hooks/project.hook';
+import { ProjectWatcher } from '../../watcher/project.watcher';
 
 export class ProjectManager {
 
@@ -73,7 +73,9 @@ export class ProjectManager {
           console.log('Found hook', fullpath);
           await import(fullpath).then(hooks => {
             for (let exportedHook in hooks) {
-              this.addHook(hooks[exportedHook]);
+              if(typeof hooks[exportedHook] === "object") {
+                this.addHook(hooks[exportedHook]);
+              }
             }
           });
         }

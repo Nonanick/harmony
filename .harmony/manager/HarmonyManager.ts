@@ -1,17 +1,17 @@
 import path from 'path';
 import { promises as fs } from 'fs';
 import chalk from 'chalk';
-import { CLIInputListener } from '../toolbox/cli.input.listener';
-import { DefaultManagerConfig } from './config/config.default';
-import { HarmonyManagerConfig } from './config/HarmonyManagerConfig';
-import { ProjectManager } from './ProjectManager';
+import { ReadableStreamListener } from '../toolbox/readable.stream..listener';
+import { HarmonyManagerConfig } from '../config/manager/HarmonyManagerConfig';
 import { ManagerCommandListener } from './commands/ManagerCommandListener';
+import { DefaultManagerConfig } from '../config/manager/config.default';
+import { ProjectManager } from './project/ProjectManager';
 
 export class HarmonyManager {
 
   config: HarmonyManagerConfig = DefaultManagerConfig;
 
-  inputListener?: CLIInputListener;
+  stdinListener?: ReadableStreamListener;
 
   managerCLICommands: ManagerCommandListener[] = [];
 
@@ -89,9 +89,9 @@ export class HarmonyManager {
   }
 
   startListeningForInput() {
-    this.inputListener = new CLIInputListener(process.stdin);
+    this.stdinListener = new ReadableStreamListener(process.stdin);
 
-    this.inputListener.on(CLIInputListener.CommandSentEvent, (command) => {
+    this.stdinListener.on(ReadableStreamListener.CommandSentEvent, (command) => {
       console.log("User sent a new command to harmony:", command);
     });
   }

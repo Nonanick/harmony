@@ -8,7 +8,7 @@
     "setup": "node ./.harmony/scripts/setup/setup_project.esm.js",
     "dev": "node ./.harmony/scripts/run-dev/run.esm.js",
     "dev:gui": "electron ./.harmony/gui/harmony.app.js",
-    "harmony" : "nodemon --watch .harmony --ext js --delay 2000 ./.harmony/run.manager.esm.js"
+    "harmony": "nodemon --watch .harmony --ext js --delay 2 ./.harmony/run.manager.esm.js"
   },
   "keywords": [
     "Harmony",
@@ -32,6 +32,7 @@
   "dependencies": {
     "esm": "^3.2.25",
     "glob": "^7.1.6",
+    "tslib": "^2.1.0",
     "v8-compile-cache": "^2.3.0"
   }
 }

@@ -3,7 +3,7 @@ import { ChildProcess, exec } from 'child_process';
 import path from 'path';
 import { WorkspaceRoot } from '../../../workspace.root';
 import { GenerateWebappRoutesArray } from '../../../../projects/webapp/.harmony/hooks/generate_route_array';
-import { ProjectWatcher } from '../../../toolbox/watcher/project.watcher';
+import { ProjectWatcher } from '../../../watcher/project.watcher';
 
 // WebApp Project
 const WebApp: {

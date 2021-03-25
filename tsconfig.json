@@ -1,25 +1,28 @@
 {
   "compilerOptions": {
-    "target": "ES6", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
-    "module": "commonjs", /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
+    "target": "ES6",
+    "module": "commonjs",
     "lib": [
       "ESNext"
-    ], 
+    ],
     "rootDir": "./",
     "outDir": "./",
-    "declaration": false, /* Generates corresponding '.d.ts' file. */
-    "strict": true, /* Enable all strict type-checking options. */
-    "moduleResolution": "node",                  /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+    "declaration": false,
+    "strict": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
     "baseUrl": "",
     "paths": {
-      "@harmony" : ["./.harmony/index.ts"]
-    },                             /* Base directory to resolve non-absolute module names. */
-    "esModuleInterop": true, /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
-    "experimentalDecorators": true, /* Enables experimental support for ES7 decorators. */
-    "skipLibCheck": true, /* Skip type checking of declaration files. */
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+      "@harmony": [
+        "./.harmony/index"
+      ]
+    },
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": [ 
+  "include": [
     "./",
     "./.harmony/**/*",
     "projects/**/.harmony/**/*"

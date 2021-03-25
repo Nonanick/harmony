@@ -1,6 +1,6 @@
 //import 'v8-compile-cache';
 import chalk from 'chalk';
-import { CLIInputListener } from '../../toolbox/cli.input.listener';
+import { ReadableStreamListener } from '../../toolbox/readable.stream..listener';
 import { Library } from './projects/run.library';
 import { Server } from './projects/run.server';
 import { WebApp } from './projects/run.webapp';
@@ -17,7 +17,7 @@ ${chalk.white(chalk.bold(chalk.bgBlue('='.repeat(Math.floor((process.stdout.colu
     + `${chalk.italic('Starting projects in development mode!')}`
   )
 
-const inputListener = new CLIInputListener(process.stdin);
+const stdinListener = new ReadableStreamListener(process.stdin);
 
 // Server Project
 Server.Boot();
@@ -28,19 +28,19 @@ Library.Boot();
 // WebApp Project
 WebApp.Boot();
 
-inputListener.on("rs:lib", async _ => {
+stdinListener.on("rs:lib", async _ => {
   await Library.RestartCompiler();
 });
 
-inputListener.on("rs:server", _ => {
+stdinListener.on("rs:server", _ => {
   DemandServerRestart();
 });
 
-inputListener.on("rs:server-build", _ => {
+stdinListener.on("rs:server-build", _ => {
   DemandServerCompilerRestart();
 });
 
-inputListener.on("exit", _ => {
+stdinListener.on("exit", _ => {
   process.exit(0);
 });
 

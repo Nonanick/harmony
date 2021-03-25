@@ -1,5 +1,5 @@
-import { DefaultWatcherConfig } from '../../toolbox/watcher/watcher_config.default';
-import { ProjectManagerConfig } from './ProjectManagerConfig';
+import type { ProjectManagerConfig } from '../project_manager/ProjectManagerConfig';
+import { DefaultWatcherConfig } from '../watcher/watcher_config.default';
 
 export const ProjectManagerDefaultConfig: ProjectManagerConfig = {
   config_file: './harmony.config.js',

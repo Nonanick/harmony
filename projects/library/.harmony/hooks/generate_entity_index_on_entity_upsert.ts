@@ -1,4 +1,4 @@
-import { ProjectHook } from '../project.hook';
+import { ProjectHook } from '@harmony';
 
 const GenerateEntityVaultOnEntityUpsertOrDelete : ProjectHook = {
   name : 'Regenerate Entity index on entity update/insert/delete',

@@ -1,16 +1,14 @@
 import { promises as fs } from 'fs';
-import { WorkspaceRoot } from '../../../workspace.root';
-import { ProjectHook } from '../project.hook';
 import path from 'path';
 import { glob } from 'glob';
-
-const DTOsFolder = path.join(WorkspaceRoot, 'projects', 'library', 'src', 'entities', 'dtos');
+import type { ProjectHook } from '@harmony';
 
 const GenerateDTOIndexOnEntityUpsertOrDelete: ProjectHook = {
   name: 'Generate DTO index on entity update/insert/delete',
   event: ["add", "change", "unlink"],
   pattern: [/dtos\/.*\.dto\.ts$/],
-  async hook() {
+  async hook({ project_root }) {
+    const DTOsFolder = path.join(project_root, 'src', 'entities', 'dtos');
     glob('**/*.dto.ts', {
       cwd: DTOsFolder,
       ignore: '**/dto.index.ts'

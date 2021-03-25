@@ -1,3 +1,2 @@
-export type { HarmonyProjectConfig } from './HarmonyProjectConfig';
+export type { HarmonyProjectConfig } from './config/project/HarmonyProjectConfig';
 export type { ProjectHook } from './toolbox/hooks/project.hook';
-export { WorkspaceRoot } from './workspace.root';

@@ -1,4 +1,4 @@
-import { ProjectWatcherConfig } from '../../toolbox/watcher/ProjectWatcherConfig';
+import type { ProjectWatcherConfig } from '../watcher/ProjectWatcherConfig';
 
 export interface ProjectManagerConfig {
   config_file : string;
