@@ -1,9 +1,9 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { glob } from 'glob';
-import type { ProjectHook } from '@harmony';
+import type { WatcherHook } from '@harmony';
 
-const GenerateDTOIndexOnEntityUpsertOrDelete: ProjectHook = {
+const GenerateDTOIndexOnEntityUpsertOrDelete: WatcherHook = {
   name: 'Generate DTO index on entity update/insert/delete',
   event: ["add", "change", "unlink"],
   pattern: [/dtos\/.*\.dto\.ts$/],

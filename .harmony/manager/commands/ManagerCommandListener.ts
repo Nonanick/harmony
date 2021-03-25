@@ -8,6 +8,6 @@ export interface ManagerCommandListener {
     harmony : HarmonyManager,
     root : string,
     manager : ProjectManager,
-    workers : ProjectManager['workers']
+    workers : ProjectManager['subprocesses']
   }) => void;
 }

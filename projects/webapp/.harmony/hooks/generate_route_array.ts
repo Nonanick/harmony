@@ -1,4 +1,4 @@
-import type {  ProjectHook } from '@harmony';
+import type { WatcherHook } from '@harmony';
 import * as ts from 'typescript';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -7,7 +7,7 @@ import chalk from 'chalk';
 
 const WebAppRoutesDir = path.join(__dirname, 'projects', 'webapp', 'src', 'routes'); // @TODO: fix dirname 
 
-export const GenerateWebappRoutesArray: ProjectHook = {
+export const GenerateWebappRoutesArray: WatcherHook = {
   name: 'Generate WebApp Routes',
   event: 'all',
   pattern: [/src\/routes\/.*\.route\.ts$/],

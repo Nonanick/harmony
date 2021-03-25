@@ -1,9 +1,9 @@
-import type { ProjectHook } from '@harmony';
+import type { WatcherHook } from '@harmony';
 import { IEntity } from 'clerk';
 import path from 'path';
 import { isEntityDefinition } from './generate_index_on_entity_upsert.hook';
 
-export const GenerateDTOOnEntityUpsert: ProjectHook = {
+export const GenerateDTOOnEntityUpsert: WatcherHook = {
   name: "Generate DTO on entity Update/Insert",
   event: ["add", "change"],
   pattern: [/\.entity\.js$/],

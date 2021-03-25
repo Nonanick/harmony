@@ -1,17 +1,20 @@
 import { Worker } from 'worker_threads';
-import { ChildProcess } from 'child_process';
-import path from 'path';
 import { promises as fs } from 'fs';
 import glob from 'glob';
-import { ProjectManagerDefaultConfig } from '../../config/project_manager/project_config.default';
-import { ProjectWatcher } from '../../watcher/ProjectWatcher';
+import path from 'path';
 import type { ProjectManagerConfig } from '../../config/project_manager/ProjectManagerConfig';
-import type { WatcherHook } from '../../watcher/WatcherHook';
-import type { ManagerCommandListener } from '../commands/ManagerCommandListener';
+import { ProjectManagerDefaultConfig } from '../../config/project_manager/project_config.default';
 import type { HarmonyScript } from '../../scripts/HarmonyScript';
 import { RunHarmonyScriptOptions } from '../../scripts/RunHarmonyScriptOptions';
+import { ProjectWatcher } from '../../watcher/ProjectWatcher';
+import type { WatcherHook } from '../../watcher/WatcherHook';
+import type { ManagerCommandListener } from '../commands/ManagerCommandListener';
 import { RunHarmonyCommandOptions } from '../commands/RunHarmonyCommandOptions';
 import { HarmonyManager } from '../HarmonyManager';
+import { ProjectSubprocess, WorkerSubprocess } from './ProjectSubprocess';
+import { SpawnProcessOptions } from './SpawnProcessOptions';
+import { SpawnWorkerOptions } from './SpawnWorkerOptions';
+import chalk from 'chalk';
 
 export class ProjectManager {
 
@@ -29,11 +32,13 @@ export class ProjectManager {
 
   watcher?: ProjectWatcher;
 
-  workers : {
-    [name : string] : Worker | ChildProcess
-  } = {};
+  subprocesses: { [name: string]: ProjectSubprocess & { created_at: Date; }; } = {};
 
-  constructor(public root: string, public packageJson: any, public harmony : HarmonyManager) {
+  constructor(
+    public root: string,
+    public packageJson: any,
+    public harmony: HarmonyManager
+  ) {
     if (packageJson.harmony != null) {
       this.config = {
         ...this.config,
@@ -56,11 +61,34 @@ export class ProjectManager {
     // Lookup for harmony commands
     await this.loadCommandsFromProject();
 
-    // Start file watcher
-    this.watcher = new ProjectWatcher(this.root, this.packageJson.name);
-    this.watcher.start();
+    // Start file watcher if any hook was found
+    if (this.hooks.length > 0) {
+      this.watcher = new ProjectWatcher(this.root, this.packageJson.name);
+      this.watcher.start();
+    }
 
     this.started = true;
+
+    console.log(
+      '✅', chalk.bold(`[${(this.packageJson.title ?? this.packageJson.name).toLocaleUpperCase()}]`) + ' Finished Loading Project Manager !'
+    );
+
+    if (this.hooks.length > 0) {
+      console.log(
+        chalk.magenta(' ➡️  Hooks\n') + `${this.hooks.map(h => ' - ' + h.name).join(';\n')};`
+      );
+    }
+
+    if (Object.values(this.scripts).length > 0) {
+      console.log(
+        chalk.green(' ➡️  Scripts\n') + `${Object.values(this.scripts).map(s => ' - ' + (s.title ?? s.name)).join('\n')}`
+      );
+    }
+
+    if (this.commands.length > 0) {
+      console.log(chalk.blue(' ➡️  Commands\n') + `${this.commands.map(c => ' - ' + c.name).join(';\n')}`);
+    }
+    console.log();
   }
 
   async lookupForConfigFile() {
@@ -89,7 +117,6 @@ export class ProjectManager {
 
         for (let filepath of matches) {
           let fullpath = path.join(this.root, this.config.harmony_folder, this.config.hooks_folder, filepath);
-          console.log('Found hook', fullpath);
           await import(fullpath).then(hooks => {
             for (let exportedHook in hooks) {
               if (typeof hooks[exportedHook] === "object") {
@@ -117,8 +144,6 @@ export class ProjectManager {
 
         for (let filepath of matches) {
           let fullpath = path.join(this.root, this.config.harmony_folder, this.config.scripts_folder, filepath);
-          console.log('Found script', fullpath);
-
           await import(fullpath).then(scripts => {
             for (let exportedScript in scripts) {
               if (typeof scripts[exportedScript] === "object") {
@@ -146,8 +171,6 @@ export class ProjectManager {
 
         for (let filepath of matches) {
           let fullpath = path.join(this.root, this.config.harmony_folder, this.config.commands_folder, filepath);
-          console.log('Found command', fullpath);
-
           await import(fullpath).then(commands => {
             for (let exportedCommand in commands) {
               if (typeof commands[exportedCommand] === "object") {
@@ -202,6 +225,74 @@ export class ProjectManager {
     command: string | ManagerCommandListener, args: any,
     options?: RunHarmonyCommandOptions
   ) {
+
+  }
+
+  async spawnWorker(args: SpawnWorkerOptions) {
+
+    if (this.subprocesses[args.name] != null) {
+      await this.killSubprocess(args.name);
+    }
+
+    let newWorker = new Worker(args.path, {
+      argv: args.args,
+      stderr: args.io?.err != 'pipe' ? true : false,
+      stdout: args.io?.out != 'pipe' ? true : false,
+      stdin: args.io?.in != 'pipe' ? true : false,
+      env: process.env,
+    });
+
+    let newSubprocess: WorkerSubprocess & { created_at: Date } = {
+      type: 'worker',
+      process: newWorker,
+      spawn: args,
+      created_at: new Date(),
+    };
+
+    this.subprocesses[args.name] = newSubprocess;
+
+    return newSubprocess;
+  }
+
+  async restartSubprocess(name: string) {
+    if (this.subprocesses[name] == null) {
+      return;
+    }
+
+    let subprocess = this.subprocesses[name];
+    await this.killSubprocess(name);
+
+    switch (subprocess.type) {
+      case 'worker':
+        await this.spawnWorker(subprocess.spawn);
+        break;
+      case 'process':
+        await this.spawnProcess(subprocess.spawn);
+        break;
+    }
+  }
+
+  async killSubprocess(name: string) {
+
+    if (this.subprocesses[name] == null) {
+      return;
+    }
+
+    let subprocess = this.subprocesses[name];
+
+    switch (subprocess.type) {
+      case 'worker':
+        await subprocess.process.terminate();
+        break;
+      case 'process':
+        subprocess.process.kill('SIGTERM');
+        break;
+    }
+
+    delete this.subprocesses[name];
+  }
+
+  async spawnProcess(args: SpawnProcessOptions) {
 
   }
 }

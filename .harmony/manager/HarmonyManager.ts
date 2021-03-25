@@ -15,8 +15,8 @@ export class HarmonyManager {
 
   managerCLICommands: ManagerCommandListener[] = [];
 
-  projectManagers : {
-    [projectName : string] : ProjectManager
+  projectManagers: {
+    [projectName: string]: ProjectManager
   } = {};
 
   started = false;
@@ -76,13 +76,12 @@ export class HarmonyManager {
         console.error('Folder', path, 'does not contain a readable package.json file!');
       }
     }
-    console.log('Spawning new project manager for', packageConfig.name);
 
     this.projectManagers[packageConfig.name] = new ProjectManager(
       path, packageConfig, this
     );
 
-    if(this.started) {
+    if (this.started) {
       await this.projectManagers[packageConfig.name].start();
     }
   }
@@ -90,9 +89,21 @@ export class HarmonyManager {
   startListeningForInput() {
     this.stdinListener = new ReadableStreamListener(process.stdin);
 
-    this.stdinListener.on(ReadableStreamListener.CommandSentEvent, (command) => {
-      console.log("User sent a new command to harmony:", command);
-    });
+    this.stdinListener.on(
+      ReadableStreamListener.CommandSentEvent,
+      (command : string) => {
+        // See if it's project specific script
+        let targetedCommandMatch = command.match(/^@(?<project_name>\w*)/);
+        if(targetedCommandMatch) {
+          console.log('command directed to project', targetedCommandMatch.groups!.project_name);
+          return;
+        }
+        // Check for harmony commands
+
+        // Check for project commands
+        console.log("User sent a new command to harmony:", command);
+      }
+    );
   }
 
   outputManagerHeader() {

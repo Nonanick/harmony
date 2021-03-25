@@ -1,10 +1,10 @@
-import type { ProjectHook } from '@harmony';
+import type { WatcherHook } from '@harmony';
 import { promises as fs } from 'fs';
 import path from 'path';
 import glob from 'glob';
 import { IEntity } from 'clerk';
 
-export const GenerateLibraryEntitiesIndex: ProjectHook = {
+export const GenerateLibraryEntitiesIndex: WatcherHook = {
   name: 'Generate Entities index file',
   event: 'all',
   pattern: [/dist\/entities\/definitions\/.*\.entity\.js$/],
