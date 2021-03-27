@@ -1,5 +1,4 @@
 <script lang="ts">
-import { DefaultTheme } from '../../../themes/theme.default';
 
   import Button from "./Button.svelte";
   import type { ButtonStyle } from "./ButtonStyle";
@@ -9,8 +8,8 @@ import { DefaultTheme } from '../../../themes/theme.default';
 
 <Button
   styles={{
-    background_color: DefaultTheme.variables['main-color-25'],
-    text_color: DefaultTheme.variables['main-color'],
+    background_color: 'var(--main-color-25)',
+    text_color: 'var(--main-color)',
     ...styles,
   }}
   on:click

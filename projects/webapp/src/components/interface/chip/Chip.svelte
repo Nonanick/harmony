@@ -15,7 +15,7 @@
     border: var(--border);
     padding: var(--padding);
     width: var(--width, auto);
-    border-radius: 15px;
+    border-radius: 3px;
     transition: opacity 0.3s, filter 0.3s, background-color 0.3s, text-decoration 0.3s;
     will-change: opacity, filter, background-color;
     filter: saturate(80%);
@@ -29,13 +29,13 @@
   .ui-chip:hover {
     background-color: var(--background-color);
   }
-  :global(.ui-button:not(:first-child)) {
+  :global(.ui-chip:not(:first-child)) {
     margin-left: 5px;
   }
-  .ui-button:hover {
+  .ui-chip:hover {
     filter: saturate(95%);
   }
-  .ui-button:active {
+  .ui-chip:active {
     filter: saturate(100%);
   }
 </style>
@@ -46,10 +46,10 @@
   {styles.text_underline != null ? '--text-underline: ' + styles.text_underline +';': ''}
   --background-color : {styles.background_color ??
     defaultStyles.background_color};
-  --text-color : {styles.text_color ??
-    defaultStyles.text_color};
-  --border: 1px solid {styles.text_color ??
-    defaultStyles.text_color};
+  --text-color : {styles.color ??
+    defaultStyles.color};
+  --border: 1px solid {styles.color ??
+    defaultStyles.color};
   --padding: {styles.padding ??
     defaultStyles.padding};
   --width: {styles.width ??

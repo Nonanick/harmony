@@ -21,16 +21,17 @@ body {
 }
 
 a {
-	color: rgb(0,100,200);
+	color: var(--main-color-75);
 	text-decoration: none;
 }
 
 a:hover {
+	color: var(--main-color);
 	text-decoration: underline;
 }
 
 a:visited {
-	color: rgb(0,80,160);
+	color: var(--secondary-color-75);
 }
 
 label {

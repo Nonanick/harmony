@@ -29,9 +29,9 @@
   <h2>Could not find the page you're looking for :(</h2>
   <h4>
     The url <i>'{$CurrentRoute.url}'</i> is not defined anywhere, but it's okay,
-    we all lost our way sometimes
+    we all lose our way sometimes
   </h4>
-  <h3>Here, take let me guide you:</h3>
+  <h3>Here, see if these help:</h3>
   <IconTextButton
     icon_src="/img/icons/back.svg"
     text="Go Back"
@@ -40,7 +40,7 @@
     }}
   />
   or
-  <Link href="">
+  <Link href="/">
     <DimmedButton>Go home</DimmedButton>
   </Link>
 </div>

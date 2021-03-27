@@ -17,8 +17,8 @@
     width: var(--width, auto);
     box-shadow: var(--box-shadow);
     border-radius: 3px;
-    transition: opacity 0.3s, filter 0.3s, background-color 0.3s, text-decoration 0.3s;
-    will-change: opacity, filter, background-color;
+    transition: opacity 0.3s, filter 0.3s, background-color 0.3s, text-decoration 0.3s, box-shadow 0.3s;
+    will-change: opacity, filter, background-color, text-decoration, box-shadow;
     filter: saturate(80%);
     margin-right: 5px;
     margin-bottom: 8px;

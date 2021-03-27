@@ -37,7 +37,7 @@ const Card: CardStyle = {
 
 const Chip : ChipStyle = {
   background_color : 'var(--main-color-25)',
-  text_color: 'var(--main-color)',
+  color: 'var(--main-color)',
   padding : '2px 15px',
   width: 'auto',
   text_weight : 500,
