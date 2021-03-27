@@ -1,7 +1,7 @@
 {
-  "name": "server",
+  "name": "lyra-pep-server",
   "version": "0.0.1",
-  "description": "Harmony's Serverproject",
+  "description": "Lyra-pep's Serverproject",
   "main": "dist/server.boot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

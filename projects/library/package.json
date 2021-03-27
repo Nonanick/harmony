@@ -1,7 +1,7 @@
 {
-  "name": "library",
+  "name": "lyra-pep-library",
   "version": "0.0.1",
-  "description": "Harmony's Library project",
+  "description": "Lyra-pep's Libraryproject",
   "main": "dist/library.js",
   "types": "dist/library.d.ts",
   "scripts": {
