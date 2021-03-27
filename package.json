@@ -1,11 +1,7 @@
 {
   "name": "lyra-pep",
   "version": "0.0.1",
-<<<<<<< HEAD
   "description": "Lyra-pep's root package",
-=======
-  "description": "Harmony's root package",
->>>>>>> 658d8da47a9f077fbf9d4004419b63d1d8fdb55f
   "main": ".harmony/scripts/run-dev/run.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -29,14 +25,8 @@
     "@types/node": "^14.14.37",
     "chalk": "^4.1.0",
     "chokidar": "^3.5.1",
-<<<<<<< HEAD
     "electron": "^12.0.2",
     "inquirer": "^8.0.0"
-=======
-    "electron": "^12.0.1",
-    "inquirer": "^8.0.0",
-    "nodemon": "^2.0.7"
->>>>>>> 658d8da47a9f077fbf9d4004419b63d1d8fdb55f
   },
   "dependencies": {
     "esm": "^3.2.25",
