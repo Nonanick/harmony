@@ -1,4 +1,4 @@
-import type { ContextMenuItem } from './ContextMenuItem';
+import type { ContextMenuItem } from '../item/ContextMenuItem';
 
 export interface ContextMenuGroup {
   title : string;

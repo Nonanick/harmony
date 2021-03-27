@@ -5,3 +5,7 @@ export interface ContextMenuItem {
   enabled? : boolean;
   onClick : () => void;
 }
+
+export function CreateContextMenuItem(options: ContextMenuItem) {
+
+}
