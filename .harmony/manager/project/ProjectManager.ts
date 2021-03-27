@@ -64,8 +64,10 @@ export class ProjectManager {
     await this.loadCommandsFromProject();
 
     // Start file watcher if any hook was found
+    
     if (this.hooks.length > 0) {
       this.watcher = new ProjectWatcher(this.root, this.packageJson.name);
+      this.watcher.add(...this.hooks);
       this.watcher.start();
     }
 

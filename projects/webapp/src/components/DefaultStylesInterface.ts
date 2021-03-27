@@ -1,5 +1,8 @@
 import type { BreadcrumbStyle } from './interface/breadcrumb/BreadcrumbStyle';
 import type { ButtonStyle } from './interface/button/ButtonStyle';
+import type { CardStyle } from './interface/card/CardStyle';
+import type { ChipStyle } from './interface/chip/ChipStyle';
+import type { CircularFrameStyle } from './interface/circular_frame/CircularFrameStyle';
 import type { SVGIconStyle } from './interface/svg_icon/SVGIconStyle';
 
 export interface DefaultStylesInterface {
@@ -19,9 +22,9 @@ export interface DefaultStylesInterface {
     AlertBox: any;
     Breadcrumb: BreadcrumbStyle;
     Button: ButtonStyle;
-    Card: any;
-    Chip: any;
-    CircularFrame: any;
+    Card: CardStyle;
+    Chip: ChipStyle;
+    CircularFrame: CircularFrameStyle;
     ContextMenu: any;
     Dropdown: any;
     ExpandableContainer: any;

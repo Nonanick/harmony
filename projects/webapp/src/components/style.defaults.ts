@@ -2,6 +2,8 @@ import type { DefaultStylesInterface } from './DefaultStylesInterface';
 import type { BreadcrumbStyle } from './interface/breadcrumb/BreadcrumbStyle';
 import type { ButtonStyle } from './interface/button/ButtonStyle';
 import type { CardStyle } from './interface/card/CardStyle';
+import type { ChipStyle } from './interface/chip/ChipStyle';
+import type { CircularFrameStyle } from './interface/circular_frame/CircularFrameStyle';
 import type { SVGIconStyle } from './interface/svg_icon/SVGIconStyle';
 
 const Breadcrumb: BreadcrumbStyle = {
@@ -33,6 +35,21 @@ const Card: CardStyle = {
   actions_background_color: 'rgba(0, 0, 0, 0.05);',
 }
 
+const Chip : ChipStyle = {
+  background_color : 'var(--main-color-25)',
+  text_color: 'var(--main-color)',
+  padding : '2px 15px',
+  width: 'auto',
+  text_weight : 500,
+}
+
+const CircularFrame : CircularFrameStyle = {
+  border : '3px solid var(--main-color-50)',
+  ratio : 1,
+  status_color : 'var(--sucess-color, green)',
+  status_text_color : 'var(--text-on-sucess-color, white)',
+};
+
 // SVG icon default styling
 const SVGIcon: SVGIconStyle = {
   aspect_ratio: 1,
@@ -62,8 +79,8 @@ const DefaultStyles: DefaultStylesInterface = {
     Breadcrumb,
     Button,
     Card,
-    Chip: {},
-    CircularFrame: {},
+    Chip,
+    CircularFrame,
     ContextMenu: {},
     Dropdown: {},
     ExpandableContainer: {},

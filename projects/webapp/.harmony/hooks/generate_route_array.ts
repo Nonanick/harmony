@@ -1,21 +1,50 @@
 import type { WatcherHook } from '@harmony';
-import * as ts from 'typescript';
 import { promises as fs } from 'fs';
 import path from 'path';
 import glob from 'glob';
 import chalk from 'chalk';
 
-const WebAppRoutesDir = path.join(__dirname, 'projects', 'webapp', 'src', 'routes'); // @TODO: fix dirname 
+const LookForVaribaleIdentifiers = ['Route', 'AppRoute'];
+
+// Search for all Identifiers that are routes
+const SearchForAllRoutes = new RegExp(
+  '(const|let)\\s*?([A-z_$#]{1}[A-z_$#0-9]*)\\s*?:\\s*?('
+  + LookForVaribaleIdentifiers.join('|')
+  + ')\\s*?=', 'mg'
+);
+
+const RetrieveIdentifier = new RegExp(
+  '(const|let)\\s*?(?<identifier>[A-z_$#]{1}[A-z_$#0-9]*)'
+);
+
+// Searchs for export (const|let) VariableName
+const SearchForExportedVariable = new RegExp(
+  'export\\s+(const|let)\\s*?([A-z_$#]{1}[A-z_$#0-9]*)', 'g'
+);
+
+// Searchs for export { Identifier, ...};
+const SearchForExportedIdentifiers = new RegExp(
+  'export\\s+\\{\\s*?(?<identifiers>([A-z_$#]{1}[A-z_$#0-9]*,?\\s*?)*)\\s*?\\}', 'gm'
+);
+
+const RetrieveExportedIdentifiers = new RegExp(
+  'export\\s+\\{\\s*?(?<identifiers>([A-z_$#]{1}[A-z_$#0-9]*,?\\s*?)*)\\s*?\\}'
+);
+
+const RetrieveDefaultExport = new RegExp(
+  'export\\s+default\\s+(?<identifier>[A-z_$#]{1}[A-z_$#0-9]*)'
+);
 
 export const GenerateWebappRoutesArray: WatcherHook = {
   name: 'Generate WebApp Routes',
   event: 'all',
   pattern: [/src\/routes\/.*\.route\.ts$/],
   mustMatchAllPatterns: true,
-  async hook({ isInitial }) {
+  async hook({ isInitial, root }) {
+    let routesFolder = path.join(root, 'src', 'routes');
 
     glob('**/*.route.ts', {
-      cwd: WebAppRoutesDir,
+      cwd: routesFolder,
       ignore: '**/index.ts'
     }, async (err, paths) => {
       if (err != null) {
@@ -37,85 +66,58 @@ export const GenerateWebappRoutesArray: WatcherHook = {
           isDefault?: boolean;
         }
       } = {};
+      for (let filepath of paths) {
+        let fileContents = await fs.readFile(
+          path.join(routesFolder, filepath),
+          'utf-8'
+        );
 
-      await Promise.all(
-        paths
-          .map(p => path.join(WebAppRoutesDir, p))
-          .map(async fullPath => {
-            let fileContent = await fs.readFile(fullPath, 'utf-8');
-            let ast = ts.createSourceFile(fullPath, fileContent, ts.ScriptTarget.Latest);
+        // Use identifier matcher
+        let identifierMatches = fileContents.match(SearchForAllRoutes);
+        for (let matched of identifierMatches ?? []) {
+          let identifier = matched.match(RetrieveIdentifier)!.groups!.identifier;
+          mapRouteIdentifiers[identifier + '@' + filepath] = {
+            file: filepath,
+            identifierName: identifier
+          };
+        }
 
-            ast.forEachChild(node => {
-              // Handle : 'export const'
-              if (ts.isVariableStatement(node)) {
-                for (let declaration of node.declarationList.declarations) {
-                  if (
-                    ts.isVariableDeclaration(declaration)
-                    && ts.isTypeReferenceNode(declaration.type!)
-                    && ts.isIdentifier(declaration.type!.typeName)
-                    // TODO: transform all of the "Interfaces" for routes in a setting 
-                    && (declaration.type!.typeName.escapedText === "Route"
-                      || declaration.type!.typeName.escapedText === "AppRoute") 
-                  ) {
-                    let exportToken = node.modifiers?.filter(m => ts.isToken(m));
+        let exportVariableMatches = fileContents.match(SearchForExportedVariable);
+        for (let matched of exportVariableMatches ?? []) {
+          let retrieveIdentifier = matched.match(RetrieveIdentifier)!.groups!.identifier;
+          if (mapRouteIdentifiers[retrieveIdentifier + '@' + filepath] != null) {
+            routeExports[retrieveIdentifier + '@' + filepath] = mapRouteIdentifiers[retrieveIdentifier + '@' + filepath];
+          }
+        }
 
-                    if (
-                      exportToken != null
-                      && exportToken.length > 0
-                      && ts.SyntaxKind.ExportKeyword === exportToken[0].kind
-                    ) {
-                      let identifierName = String((declaration.name as ts.Identifier).escapedText);
-                      routeExports[`${identifierName}@${fullPath}`] = {
-                        file: fullPath,
-                        identifierName: identifierName,
-                        isDefault: false
-                      };
-                    } else {
-                      let identifierName = String((declaration.name as ts.Identifier).escapedText);
-                      mapRouteIdentifiers[`${identifierName}@${fullPath}`] = {
-                        file: fullPath,
-                        identifierName: identifierName,
-                        isDefault: false
-                      };
-                    }
-                  }
-                }
-              }
+        let exportIdentifiersMatches = fileContents.match(SearchForExportedIdentifiers);
+        for (let matched of exportIdentifiersMatches ?? []) {
+          let retrieveIdentifiers = matched.match(RetrieveExportedIdentifiers)!.groups!.identifiers;
+          retrieveIdentifiers.split(',').map(i => i.trim()).forEach(identifier => {
+            if (mapRouteIdentifiers[identifier + '@' + filepath] != null) {
+              routeExports[identifier + '@' + filepath] = mapRouteIdentifiers[identifier + '@' + filepath];
+            }
+          });
+        }
 
-              // Handle : 'export default' 
-              if (ts.isExportAssignment(node)
-                && ts.isIdentifier(node.expression)
-                && mapRouteIdentifiers[`${node.expression.escapedText}@${fullPath}`] != null) {
-                routeExports[`${node.expression.escapedText}@${fullPath}`] = {
-                  ...mapRouteIdentifiers[`${node.expression.escapedText}@${fullPath}`],
-                  isDefault: true,
-                };
-              }
+        let defaultExport = fileContents.match(RetrieveDefaultExport);
+        if (defaultExport != null) {
+          let identifier = defaultExport.groups!.identifier;
+          if (mapRouteIdentifiers[identifier + '@' + filepath] != null) {
+            routeExports[identifier + '@' + filepath] = {
+              ...mapRouteIdentifiers[identifier + '@' + filepath],
+              isDefault: true
+            };
+          }
+        }
+      }
 
-              // Handle : 'export { NamedExports }'
-              if (
-                ts.isExportDeclaration(node)
-                && ts.isNamedExports(node.exportClause!)
-              ) {
-                for (let exportedEl of node.exportClause!.elements) {
-                  if (
-                    mapRouteIdentifiers[`${(exportedEl.propertyName ?? exportedEl.name).escapedText}@${fullPath}`] != null
-                  ) {
-                    routeExports[`${exportedEl.name.escapedText}@${fullPath}`] = {
-                      ...mapRouteIdentifiers[`${(exportedEl.propertyName ?? exportedEl.name).escapedText}@${fullPath}`],
-                      identifierName: String(exportedEl.name.escapedText)
-                    };
-                  }
-                }
-              }
-
-            });
-            return;
-          }));
       let routesFileContent = '// # - Routes barrel !\n\n';
-
+      if (Object.values(routeExports).length === 0) {
+        routesFileContent += 'export {}; // Prevent errors in "isolatedModules" compile flag';
+      }
       for (let exportClause of Object.values(routeExports)) {
-        let relativePath = './' + exportClause.file.substr(WebAppRoutesDir.length + 1).replaceAll(path.sep, path.posix.sep).replace(/.ts$/g, '');
+        let relativePath = './' + exportClause.file.replaceAll(path.sep, path.posix.sep).replace(/.ts$/g, '');
         routesFileContent += `export { ${(exportClause.isDefault ?? false) ? 'default as ' : ''}${exportClause.identifierName} } from '${relativePath}';\n`
       }
       if (!isInitial) {
@@ -129,9 +131,8 @@ export const GenerateWebappRoutesArray: WatcherHook = {
           ).join('\n')
         );
       }
-
       fs.writeFile(
-        path.join(WebAppRoutesDir, 'routes.ts'),
+        path.join(routesFolder, 'routes.ts'),
         routesFileContent
       );
     });

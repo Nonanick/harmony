@@ -13,6 +13,8 @@
 	import { DarkTheme } from "../themes/dark.theme";
 	import { LightInterfaceTheme } from "../themes/light.theme";
 	import { fade } from 'svelte/transition';
+import Chip from '../components/interface/chip/Chip.svelte';
+import CircularFrame from '../components/interface/circular_frame/CircularFrame.svelte';
 
 </script>
 
@@ -43,11 +45,24 @@
 	li {
 		margin-bottom: 6px;
 	}
+
+	sector.components {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: auto;
+		grid-auto-rows: auto;
+		row-gap: 20px;
+		column-gap: 25px;
+		box-sizing: border-box;
+		padding: 10px 0;
+	}
 	.interface-display {
 		display: grid;
-		grid-template-columns: 350px 1fr;
-		grid-template-rows: 1fr;
+		grid-template-columns: 1fr;
+		grid-template-rows: auto 1fr;
 		column-gap: 20px;
+		background-color: rgba(255,255,255,0.8);
+		border-radius: 4px;
 	}
 
 	.component-display {
@@ -57,6 +72,12 @@
 	@media (min-width: 640px) {
 		div {
 			max-width: none;
+		}
+	}
+
+	@media screen and (max-width: 850px) {
+		sector.components {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>
@@ -80,13 +101,9 @@
 		}}>Change theme</DimmedButton
 	>
 	<LineSeparator />
-
-	<sector>
-		<h3>Interface Components</h3>
-		<div><h4>Alert Box</h4></div>
-		<LineSeparator />
-		<br />
-
+	<h3>Interface Components</h3>
+	<sector class="components">
+	
 		<!-- Breadcrumb -->
 		<div class="interface-display">
 			<div class="component-display">
@@ -141,10 +158,6 @@
 				</ul>
 			</div>
 		</div>
-
-		<br />
-		<LineSeparator />
-		<br />
 
 		<!-- Button -->
 
@@ -211,16 +224,12 @@
 			</div>
 		</div>
 
-		<br />
-		<LineSeparator />
-		<br />
-
 		<!-- Card -->
 		<div class="interface-display" name="card">
 			<div class="component-display">
 				<Card styles={{ image_max_height: "100px" }}>
 					<img
-						src="/img/card_image.jpg"
+						src="/img/card_image.jpeg"
 						class="image"
 						slot="image"
 						alt="card header"
@@ -281,12 +290,105 @@
 			</div>
 		</div>
 
-		<br />
-		<LineSeparator />
-		<br />
+		<!-- Chip -->
+		<div class="interface-display">
+			<div class="component-display">
+				<Chip>Chip</Chip>
+			</div>
+			<div class="component-properties">
+				<h3>Chip</h3>
+				<h4>➡️ Styling</h4>
+				<ul>
+					<li>
+						<b>background_color:</b> color to be used as the button background, directly
+						inserted into 'background-color' css property, accepts all the values
+						that are valid background colors
+					</li>
+					<li>
+						<b>text_color:</b> color to be used as the button text color and border color, directly
+						inserted into 'text-color' ans 'border-color' css property, accepts all the values that
+						are valid colors
+					</li>
+					<li>
+						<b>padding:</b> button padding, use it as the shorthand css property
+						for 'padding'
+					</li>
+					<li>
+						<b>border:</b> button border, use it as the shorthand css property for
+						'border'
+					</li>
+					<li>
+						<b>width:</b> set a width to be used inside the button, by default it
+						assumes an 'auto' width, to wrap its contents
+					</li>
+				</ul>
+			</div>
+		</div>
 
-		<div><h4>Chip</h4></div>
-		<div><h4>Circular Frame</h4></div>
+		<!-- Circular Frame -->
+		<div class="interface-display">
+			<div class="component-display">
+				<CircularFrame style={{ status_color : 'transparent'}} size="60px">	
+					<img
+					src="/img/card_image.jpeg"
+					class="image"
+					alt="card header" />
+				</CircularFrame>
+				<CircularFrame size="60px">	
+					<img
+					src="/img/card_image.jpeg"
+					class="image"
+					alt="card header" />
+				</CircularFrame>
+				<CircularFrame size="60px">	
+					<img
+					src="/img/card_image.jpeg"
+					class="image"
+					alt="card header" />
+					<span slot="status">
+						10
+					</span>
+				</CircularFrame>
+				<CircularFrame size="60px">	
+					<img
+					src="/img/card_image.jpeg"
+					class="image"
+					alt="card header" />
+
+					<SvgIcon class="clickable" slot="status" src="/img/icons/reload.svg" styles={{size : '12px', color : 'white'}}></SvgIcon>
+						
+				</CircularFrame>
+			</div>
+			<div class="component-properties">
+				<h3>Circular Frame</h3>
+				<h4>➡️ Styling</h4>
+				<ul>
+					<li>
+						<b>background_color:</b> color to be used as the button background, directly
+						inserted into 'background-color' css property, accepts all the values
+						that are valid background colors
+					</li>
+					<li>
+						<b>text_color:</b> color to be used as the button text color and border color, directly
+						inserted into 'text-color' ans 'border-color' css property, accepts all the values that
+						are valid colors
+					</li>
+					<li>
+						<b>padding:</b> button padding, use it as the shorthand css property
+						for 'padding'
+					</li>
+					<li>
+						<b>border:</b> button border, use it as the shorthand css property for
+						'border'
+					</li>
+					<li>
+						<b>width:</b> set a width to be used inside the button, by default it
+						assumes an 'auto' width, to wrap its contents
+					</li>
+				</ul>
+			</div>
+		</div>
+
 		<div><h4>Context Menu</h4></div>
 		<div><h4>Dropdown</h4></div>
 		<div><h4>Expandable Container</h4></div>

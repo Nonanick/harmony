@@ -47,7 +47,7 @@ import type { SVGIconStyle } from './SVGIconStyle';
 </style>
 
 <div
-  class="ui-icon"
+  class="ui-icon {$$props.class ?? ''}"
   style="
   --source: url({src}); 
   --size : {styles.size ?? defaultStyles.size}; 
