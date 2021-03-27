@@ -1,7 +1,7 @@
-import type { Route } from '../../router/Route'
+import type { AppRoute } from '../../components/router/AppRoute';
 
-export const SubRoute : Route = {
-  pattern : 'subroute',
+export const SubRoute : AppRoute = {
+  url_pattern : 'subroute',
   async onActivation() {
 
   }

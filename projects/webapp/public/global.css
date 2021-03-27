@@ -5,14 +5,19 @@ html, body {
 }
 
 body {
-	color: #333;
+	color: var(--text-on-background-color);
 	margin: 0;
 	box-sizing: border-box;
 	padding: 8px;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-	width: 100vw;
-	height: 100vh;
-	background-color: #f9f9f9;
+	font-family: 'Lato', 'Proxima Nova', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-size: 0.9em;
+	width: 100%;
+	height: 100%;
+	background-color: var(--background-color);
+
+	position: absolute;
+	overflow-y: auto;
+	overflow-x: auto;
 }
 
 a {
@@ -63,4 +68,30 @@ button:not(:disabled):active {
 
 button:focus {
 	border-color: #666;
+}
+
+.clickable {
+	cursor: pointer;
+	transition: box-shadow 0.6s;
+	will-change: opacity, filter, background-color, box-shadow;
+    filter: saturate(80%);
+		--box-shadow: var(--box-shadow-2);
+	}
+	
+	.clickable:hover {
+	filter: saturate(95%);
+	--box-shadow: var(--box-shadow-3);
+}
+
+.clickable:active {
+	filter: saturate(100%);
+	--box-shadow: var(--box-shadow-1);
+}
+
+.page {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	margin: 0;
 }

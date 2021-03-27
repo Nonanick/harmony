@@ -1,6 +1,6 @@
-import type { HarmonyConfig } from './.harmony/HarmonyConfig';
+import type { HarmonyProjectConfig } from '@harmony';
 
-const ProjectConfig : Partial<HarmonyConfig> = {
+const ProjectConfig : Partial<HarmonyProjectConfig> = {
 
 };
 

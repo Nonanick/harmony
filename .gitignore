@@ -6,3 +6,4 @@ projects/**/dist/**/*.d.ts
 **/*.js.map
 **/.harmony/**/*.js
 !**/.harmony/**/*.esm.js
+projects/webapp/public/img/card_image.jpg

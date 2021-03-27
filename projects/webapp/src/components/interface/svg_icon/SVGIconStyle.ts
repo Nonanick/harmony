@@ -4,4 +4,5 @@ export interface SVGIconStyle {
   color : string;
   bg_color: string;
   box_radius : string;
+  margin: string;
 }

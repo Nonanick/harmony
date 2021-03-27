@@ -1,11 +1,10 @@
 <script lang="ts">
 import DefaultStyles from '../../style.defaults';
 
-import type { SVGIconProps } from './SVGIconProps';
 
 import type { SVGIconStyle } from './SVGIconStyle';
 
-  export let props: SVGIconProps;
+  export let src: string;
 
   export let styles : Partial<SVGIconStyle> = {};
 
@@ -14,7 +13,7 @@ import type { SVGIconStyle } from './SVGIconStyle';
 </script>
 
 <style>
-  .ui-icon {
+  :global(.ui-icon) {
     position: relative;
     display: inline-block;
     width: var(--size);
@@ -23,8 +22,9 @@ import type { SVGIconStyle } from './SVGIconStyle';
     background-color: var(--bg-color);
     overflow: hidden;
     vertical-align: middle;
+    margin: var(--margin);
   }
-  .fix-ratio {
+  :global(.ui-icon > .fix-ratio) {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -41,20 +41,21 @@ import type { SVGIconStyle } from './SVGIconStyle';
     -webkit-mask-position: center;
     mask-position: center;
 
-    -webkit-mask-size: 100%;
-    mask-size: 100%;
+    -webkit-mask-size: 90%;
+    mask-size: 90%;
   }
 </style>
 
 <div
   class="ui-icon"
   style="
-  --source: url({props.src}); 
+  --source: url({src}); 
   --size : {styles.size ?? defaultStyles.size}; 
   --icon-color: {styles.color ?? defaultStyles.color}; 
   --radius: {styles.box_radius ?? defaultStyles.box_radius}; 
   --bg-color : {styles.bg_color ?? defaultStyles.bg_color}; 
-  --aspect-ratio: {styles.aspect_ratio ?? defaultStyles.aspect_ratio}
+  --aspect-ratio: {styles.aspect_ratio ?? defaultStyles.aspect_ratio};
+  --margin: {styles.margin ?? defaultStyles.margin}
   "
 >
   <div class="fix-ratio" />

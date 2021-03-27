@@ -1431,6 +1431,16 @@
         "signature": "a5833a94b9228ed0ed8dfe85360d6f598be259ef4df6132b6c2555b3171a09c1",
         "affectsGlobalScope": false
       },
+      "./src/modules/module.interface.ts": {
+        "version": "aa746ee97f280d2dfb387839c7f67934e724567a5ba2991691aa0274696769e4",
+        "signature": "784b0c209c6fadd4a868911c6b367cf3669e001c5c9e71c5b532b10f613110e9",
+        "affectsGlobalScope": false
+      },
+      "./src/modules/mock/mock.module.ts": {
+        "version": "011d3635e9d77530c754d6c4be53ea15f48227a1835c09c9e19c56846e7f6ded",
+        "signature": "42bc1c8b91e867312bbcaf2f92566b813133d8086e3b85aa53c76736cf1abd4f",
+        "affectsGlobalScope": false
+      },
       "../../node_modules/.pnpm/@types/estree@0.0.39/node_modules/@types/estree/index.d.ts": {
         "version": "89ccbe04e737ce613f5f04990271cfa84901446350b8551b0555ddf19319723b",
         "signature": "89ccbe04e737ce613f5f04990271cfa84901446350b8551b0555ddf19319723b",
@@ -2968,6 +2978,14 @@
       ],
       "./src/data/entity/mocked.entity.ts": [
         "../../../clerk/dist/Clerk.d.ts",
+        "../../node_modules/.pnpm/tslib@2.1.0/node_modules/tslib/tslib.d.ts"
+      ],
+      "./src/modules/mock/mock.module.ts": [
+        "../../node_modules/.pnpm/tslib@2.1.0/node_modules/tslib/tslib.d.ts",
+        "./src/modules/module.interface.ts"
+      ],
+      "./src/modules/module.interface.ts": [
+        "../../../maestro/dist/index.d.ts",
         "../../node_modules/.pnpm/tslib@2.1.0/node_modules/tslib/tslib.d.ts"
       ],
       "./src/server.adapter.ts": [
@@ -4589,6 +4607,12 @@
       "./src/data/entity/mocked.entity.ts": [
         "../../../clerk/dist/Clerk.d.ts"
       ],
+      "./src/modules/mock/mock.module.ts": [
+        "./src/modules/module.interface.ts"
+      ],
+      "./src/modules/module.interface.ts": [
+        "../../../maestro/dist/index.d.ts"
+      ],
       "./src/server.adapter.ts": [
         "../../../maestro-fastify/dist/index.d.ts"
       ],
@@ -5415,6 +5439,8 @@
       "./src/data/entity/mocked.entity.ts",
       "./src/data/store.boot.ts",
       "./src/data/store.ts",
+      "./src/modules/mock/mock.module.ts",
+      "./src/modules/module.interface.ts",
       "./src/server.adapter.ts",
       "./src/server.boot.esm.js",
       "./src/server.boot.ts",

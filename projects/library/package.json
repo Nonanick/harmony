@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "lyra-pep-library",
+=======
+  "name": "library",
+>>>>>>> 658d8da47a9f077fbf9d4004419b63d1d8fdb55f
   "version": "0.0.1",
   "description": "Lyra-pep's Libraryproject",
   "main": "dist/library.js",

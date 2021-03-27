@@ -8,6 +8,13 @@ export interface InterfaceTheme {
     'text-on-secondary-color' : string,
     'background-color' : string,
     'text-on-background-color' : string,
+
+    'default-box-shadow' : string;
+    'box-shadow-1' : string;
+    'box-shadow-2' : string;
+    'box-shadow-3' : string;
+    'box-shadow-4' : string;
+
     [name : string] : any;
   };
 }

@@ -1,19 +1,18 @@
-import type { Route } from '../router/Route';
+import type { AppRoute } from '../components/router/AppRoute';
+import { DisplayRoutedComponent } from '../components/router/DisplayRoutedComponent';
+import LandingPage from '../pages/LandingPage.svelte';
+import UIKit from '../pages/UIKit.svelte';
 
-const AboutRoute: Route = {
-  pattern: 'about',
-  async onActivation() {
-
-  }
+const UIKitRoute: AppRoute = {
+  url_pattern: 'about',
+  onActivation : DisplayRoutedComponent(UIKit)
 }
 
-const NotAboutRoute: Route = {
-  pattern: 'not-about',
-  async onActivation() {
-
-  }
+const NotAboutRoute: AppRoute = {
+  url_pattern: 'not-about',
+  onActivation : DisplayRoutedComponent(LandingPage)
 }
 
-export { AboutRoute as Another };
+export { UIKitRoute };
 
 export default NotAboutRoute;
