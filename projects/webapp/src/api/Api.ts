@@ -1,4 +1,4 @@
-import type { ApiBridge, ApiPendingRequest, ApiRequest, ApiRequestProxy, ApiResponse, ApiResponseProxy } from 'harmony-library';
+import type { ApiBridge, ApiPendingRequest, ApiRequest, ApiRequestProxy, ApiResponse, ApiResponseProxy } from 'library';
 
 export class Api implements ApiBridge {
 

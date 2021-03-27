@@ -18,7 +18,7 @@ export const RunScriptCommand: HarmonyCommand = {
 
       let manager = harmony.projectManagers[projectName];
       let script = manager.scripts[commandArgs.script_name];
-      if (typeof script.run === "function") {
+      if (typeof script?.run === "function") {
         let runScript: HarmonyScript['run'] = script.run;
         runScript({
           harmony,

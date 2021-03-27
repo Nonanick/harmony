@@ -67,13 +67,13 @@ export default {
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
-		!production && serve(),
+	//	!production && serve(),
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production
 		!production && livereload({
 			watch : 'public',
-		//	clientUrl : 'http://localhost:35729/livereload.js?snipv'
+			clientUrl : 'http://localhost:35729/livereload.js?snipv'
 		}),
 
 		// If we're building for production (npm run build

@@ -1,4 +1,4 @@
-import type { ApiBridge } from 'harmony-library';
+import type { ApiBridge } from 'library';
 import { Api } from '../api/Api';
 /** # Generated File
  *  ================
