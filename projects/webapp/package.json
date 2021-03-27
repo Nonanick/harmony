@@ -1,5 +1,5 @@
 {
-  "name": "harmony-webapp",
+  "name": "lyra-pep-webapp",
   "version": "0.0.1",
   "private": false,
   "scripts": {
@@ -25,11 +25,11 @@
     "typescript": "^4.0.0"
   },
   "dependencies": {
-    "harmony-library": "workspace:^0.0.1",
     "path-to-regexp": "^6.2.0",
-    "sirv-cli": "^1.0.0"
+    "sirv-cli": "^1.0.0",
+    "lyra-pep-library": "workspace:^0.0.1"
   },
-  "author": "nicholas",
+  "author": "Nicholas Frai",
   "license": "MIT",
-  "description": "Harmony's Webapp project"
+  "description": "Lyra-pep's Webappproject"
 }

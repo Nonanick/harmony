@@ -1,8 +1,6 @@
 <script lang="ts">
 import LineSeparator from './components/interface/line_separator/LineSeparator.svelte';
 
-
-
 </script>
 
 <main>

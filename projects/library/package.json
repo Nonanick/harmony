@@ -1,7 +1,7 @@
 {
-  "name": "harmony-library",
+  "name": "lyra-pep-library",
   "version": "0.0.1",
-  "description": "Harmony's Library project",
+  "description": "Lyra-pep's Libraryproject",
   "main": "dist/library.js",
   "types": "dist/library.d.ts",
   "scripts": {
@@ -11,7 +11,7 @@
     "Harmony",
     "Library"
   ],
-  "author": "nicholas",
+  "author": "Nicholas Frai",
   "license": "MIT",
   "dependencies": {
     "kuuid": "^0.6.0"
