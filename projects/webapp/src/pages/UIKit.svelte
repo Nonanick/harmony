@@ -18,7 +18,22 @@
 	import { ContextMenu } from "../components/interface/context_menu/ContextMenu";
 
 	function openContextMenu(ev: MouseEvent) {
-		ContextMenu(ev);
+		ContextMenu(ev, {
+			items : [
+				{
+					title : 'Click Me',
+					onClick() {
+						alert('clicked me!');
+					}
+				},
+				{
+					title : 'NO! Click Me',
+					onClick() {
+						alert('clicked me!');
+					}
+				}
+			]
+		});
 	}
 </script>
 
