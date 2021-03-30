@@ -1,5 +1,5 @@
 {
-  "name": "lyra-pep-library",
+  "name": "library",
   "version": "0.0.1",
   "description": "Lyra-pep's Libraryproject",
   "main": "dist/library.js",
