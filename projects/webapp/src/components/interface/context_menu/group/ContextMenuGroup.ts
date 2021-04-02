@@ -1,25 +1,22 @@
-import type { ContextMenuItem } from '../item/ContextMenuItem';
+import type { IContextMenuItem } from '../item/IContextMenuItem';
+import type { IContextMenuSubmenu } from '../submenu/ContextMenuSubmenu';
 
-export interface ContextMenuGroup {
+export interface IContextMenuGroup {
   title : string;
   icon? : string;
   icon_color? : string;
   enabled? : boolean;
-  items : ContextMenuItem[];
+  items : (IContextMenuSubmenu | IContextMenuItem)[];
 }
 
-export function CreateContextMenuGroup(options : ContextMenuGroup) {
-  const group = document.createElement('div');
 
-  return group;
-}
-
-export function isContextMenuGroup(obj : any) : obj is ContextMenuGroup {
+export function isContextMenuGroup(obj : any) : obj is IContextMenuGroup {
   return (
     typeof obj.title === "string"
+    && obj.spawn_submenu === undefined
     && Array.isArray(obj.items)
     && (typeof obj.icon === "string" || obj.icon == null)
-    && (typeof obj.icon_color === "string" || obj.icon_color == null)
+    && (typeof obj.icon_style === "object" || obj.icon_style == null)
     && (typeof obj.enabled === "boolean" || obj.enabled == null)
   );
 }

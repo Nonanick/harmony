@@ -13,6 +13,15 @@ import type { SVGIconStyle } from './SVGIconStyle';
 </script>
 
 <style>
+  :global(.ui-icon.clickable > .fix-ratio), :global(.clickable .ui-icon > .fix-ratio) {
+    transform: scale(100%);
+    will-change: transform;
+    transition:  transform 0.1s 0.2s;
+    transition-timing-function : linear;
+  }
+  :global(.ui-icon.clickable:hover > .fix-ratio), :global(.clickable:hover .ui-icon > .fix-ratio) {
+    transform: scale(105%);
+  }
   :global(.ui-icon) {
     position: relative;
     display: inline-block;
@@ -41,8 +50,8 @@ import type { SVGIconStyle } from './SVGIconStyle';
     -webkit-mask-position: center;
     mask-position: center;
 
-    -webkit-mask-size: 90%;
-    mask-size: 90%;
+    -webkit-mask-size: 100%;
+    mask-size: 100%;
   }
 </style>
 

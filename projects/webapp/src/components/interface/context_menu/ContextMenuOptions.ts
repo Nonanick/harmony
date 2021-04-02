@@ -1,10 +1,14 @@
 import type { ContextMenuStyle } from './ContextMenuStyle';
-import type { ContextMenuGroup } from './group/ContextMenuGroup';
-import type { ContextMenuItem } from './item/ContextMenuItem';
-import type { ContextMenuSubmenu } from './submenu/ContextMenuSubmenu';
+import type { IContextMenuGroup } from './group/ContextMenuGroup';
+import type { IContextMenuItem } from './item/IContextMenuItem';
+import type { IContextMenuSubmenu } from './submenu/ContextMenuSubmenu';
 
 export interface ContextMenuOptions {
-  items: (ContextMenuGroup | ContextMenuItem | ContextMenuSubmenu)[];
+  items: (IContextMenuGroup | IContextMenuItem | IContextMenuSubmenu)[];
   style?: Partial<ContextMenuStyle>;
   closeOnOuterClick?: boolean;
+  position? : {
+    x : number;
+    y : number;
+  }
 }

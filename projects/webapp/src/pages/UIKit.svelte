@@ -15,95 +15,73 @@
 	import { fade } from "svelte/transition";
 	import Chip from "../components/interface/chip/Chip.svelte";
 	import CircularFrame from "../components/interface/circular_frame/CircularFrame.svelte";
-	import { ContextMenu } from "../components/interface/context_menu/ContextMenu";
+	import ContextMenu from "../components/interface/context_menu/ContextMenu.svelte";
+	import type { ContextMenuOptions } from "../components/interface/context_menu/ContextMenuOptions";
 
-	function openContextMenu(ev: MouseEvent) {
-		ContextMenu(ev, {
+	const CMItems: ContextMenuOptions["items"] = [
+		{
+			icon: "/img/icons/menu.svg",
+			title: "Click Me",
+			onClick() {
+				alert("clicked me!");
+			},
+		},
+		{
+			title: "NO! Click Me",
+			onClick() {
+				alert("clicked me!");
+			},
+		},
+		{
+			title: "Tou cannot click me ",
+			enabled: false,
+			onClick() {
+				console.log("oopsie");
+			},
+		},
+		{
+			title: "Im a submenu",
+			spawn_submenu: true,
+			items: [
+				{
+					icon: "/img/icons/menu.svg",
+					title: "Click Me",
+					onClick() {
+						alert("clicked me!");
+					},
+				},
+			],
+		},
+		{
+			title : "im a group!",
 			items : [
 				{
-					title : 'Click Me',
+					icon: "/img/icons/menu.svg",
+					title: "Click Me",
 					onClick() {
-						alert('clicked me!');
-					}
+						alert("clicked me!");
+					},
 				},
-				{
-					title : 'NO! Click Me',
-					onClick() {
-						alert('clicked me!');
-					}
-				}
 			]
-		});
+		}
+	];
+
+	let cmVisibility = false;
+
+	let cmPosition = {
+		x: "0",
+		y: "0",
+	};
+
+	function openContextMenu(ev: MouseEvent) {
+		ev.preventDefault();
+		cmPosition = {
+			x: ev.clientX + "px",
+			y: ev.clientY + "px",
+		};
+		cmVisibility = true;
 	}
 </script>
-
-<style>
-	div {
-		position: relative;
-		padding: 1em;
-		margin: 0;
-		box-sizing: border-box;
-	}
-
-	h1 {
-		color: var(--main-color);
-		font-size: 2em;
-		font-weight: 300;
-		padding: 0;
-		margin: 0;
-		width: auto;
-		margin-bottom: 5px;
-	}
-
-	h3 {
-		color: var(--secondary-color);
-		padding: 0;
-		margin: 0;
-	}
-
-	li {
-		margin-bottom: 6px;
-	}
-
-	sector.components {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-template-rows: auto;
-		grid-auto-rows: auto;
-		row-gap: 20px;
-		column-gap: 25px;
-		box-sizing: border-box;
-		padding: 10px 0;
-	}
-	.interface-display {
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: auto 1fr;
-		column-gap: 20px;
-		background-color: var(--transparent-background-70);
-		border-radius: 4px;
-	}
-
-	.component-display {
-		line-height: 1.5em;
-	}
-
-	@media (min-width: 640px) {
-		div {
-			max-width: none;
-		}
-	}
-
-	@media screen and (max-width: 850px) {
-		sector.components {
-			grid-template-columns: 1fr;
-		}
-		.component-display {
-			text-align: center;
-			justify-self: center;
-		}
-	}
-</style>
 
 <div transition:fade>
 	<h1>
@@ -411,9 +389,13 @@
 		<!-- Context Menu-->
 		<div class="interface-display">
 			<div class="component-display">
-				<Button on:contextmenu={openContextMenu}>
-					Right click me
-				</Button>
+				<Button on:contextmenu={openContextMenu}>Right click me</Button>
+				<ContextMenu
+					title="Context Menu"
+					bind:visible={cmVisibility}
+					items={CMItems}
+					bind:position={cmPosition}
+				/>
 			</div>
 			<div class="component-properties">
 				<h3>Context Menu</h3>
@@ -458,3 +440,71 @@
 		<div><h4>Tooltip</h4></div>
 	</sector>
 </div>
+
+<style>
+	div {
+		position: relative;
+		padding: 1em;
+		margin: 0;
+		box-sizing: border-box;
+	}
+
+	h1 {
+		color: var(--main-color);
+		font-size: 2em;
+		font-weight: 300;
+		padding: 0;
+		margin: 0;
+		width: auto;
+		margin-bottom: 5px;
+	}
+
+	h3 {
+		color: var(--secondary-color);
+		padding: 0;
+		margin: 0;
+	}
+
+	li {
+		margin-bottom: 6px;
+	}
+
+	sector.components {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: auto;
+		grid-auto-rows: auto;
+		row-gap: 20px;
+		column-gap: 25px;
+		box-sizing: border-box;
+		padding: 10px 0;
+	}
+	.interface-display {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: auto 1fr;
+		column-gap: 20px;
+		background-color: var(--transparent-background-70);
+		border-radius: 4px;
+	}
+
+	.component-display {
+		line-height: 1.5em;
+	}
+
+	@media (min-width: 640px) {
+		div {
+			max-width: none;
+		}
+	}
+
+	@media screen and (max-width: 850px) {
+		sector.components {
+			grid-template-columns: 1fr;
+		}
+		.component-display {
+			text-align: center;
+			justify-self: center;
+		}
+	}
+</style>
