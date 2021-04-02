@@ -38,4 +38,11 @@ export interface DefaultStylesInterface {
     Tab: any;
     Tooltip : any;
   };
+  modals : {
+    AcknowledgeDialog : any;
+    ConfirmDialog : any;
+    DrawerWindow : any;
+    Modal : any;
+    Window : any;
+  }
 }

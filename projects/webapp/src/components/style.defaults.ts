@@ -93,6 +93,13 @@ const DefaultStyles: DefaultStylesInterface = {
     SVGIcon,
     Tab: {},
     Tooltip: {},
+  },
+  modals : {
+    AcknowledgeDialog : {},
+    ConfirmDialog : {},
+    DrawerWindow : {},
+    Modal : {},
+    Window : {},
   }
 };
 
