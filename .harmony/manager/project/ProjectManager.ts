@@ -49,7 +49,7 @@ export class ProjectManager {
     }
 
   }
-
+ 
   async start() {
     // Lookup for harmony.config.js
     await this.lookupForConfigFile();

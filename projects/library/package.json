@@ -1,7 +1,7 @@
 {
   "name": "library",
   "version": "0.0.1",
-  "description": "Lyra-pep's Libraryproject",
+  "description": "Library project",
   "main": "dist/library.js",
   "types": "dist/library.d.ts",
   "scripts": {
