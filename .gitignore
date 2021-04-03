@@ -7,3 +7,5 @@ projects/**/dist/**/*.d.ts
 **/.harmony/**/*.js
 !**/.harmony/**/*.esm.js
 projects/webapp/public/img/card_image.jpg
+
+tsconfig.tsbuildinfo
