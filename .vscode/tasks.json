@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev",
+			"path": "projects/webapp/",
+			"problemMatcher": [],
+			"label": "Build WebApp",
+			"detail": "rollup -c -w"
+		},
+		{
+			"type": "shell",
+			"command" : "tsc -w",
+			"options": {
+				"cwd" : "projects/server"
+			},
+			"problemMatcher": [],
+			"label": "Build Server",
+			"detail": "rollup -c -w"
+		}
+	]
+}
