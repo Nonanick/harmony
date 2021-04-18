@@ -6,7 +6,7 @@ export const LightInterfaceTheme: InterfaceTheme = {
   variables: {
 
     // Main color
-    "secondary-color": "#A71D31",
+    "secondary-color": "#407076",
     "secondary-color-75": "#DA2F49",
     "secondary-color-50": "#E36376",
     "secondary-color-25": "#f7c7ce",
@@ -18,7 +18,7 @@ export const LightInterfaceTheme: InterfaceTheme = {
     "main-color-50": "#126B97",
     "main-color-25": "#CEDFE8",
     "text-on-main-color": "#f8f8f8",*/
-    "main-color": "rgba(32,32,32,1)",
+    "main-color": "#5A0002",
     "main-color-75": "rgba(32,32,32,0.75)",
     "main-color-50": "rgba(32,32,32,0.5)",
     "main-color-25": "rgba(32,32,32,0.25)",
